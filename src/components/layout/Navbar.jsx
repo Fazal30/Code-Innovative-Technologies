@@ -51,8 +51,8 @@ export default function Navbar({ theme, toggleTheme }) {
             <MdGraphicEq /> <span>ENCRYPTED_SESSION: ACTIVE</span>
           </motion.div>
           <span className="opacity-20 text-white">|</span>
-          <a href="mailto:info@mintwaystech.com" className="hover:text-white transition-colors">
-            INFO@MINTWAYSTECH.COM
+          <a href="mailto:hr@codeinnovativetechnologies.com" className="hover:text-white transition-colors">
+            hr@codeinnovativetechnologies.com
           </a>
         </div>
 
@@ -85,7 +85,7 @@ export default function Navbar({ theme, toggleTheme }) {
               <div className="absolute inset-0 flex items-center justify-center text-white font-black text-xl z-10">M</div>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-black tracking-tighter dark:text-white leading-none">MINTWAYS</span>
+              <span className="text-xl font-black tracking-tighter dark:text-white leading-none">Code Innovative</span>
               <span className="text-[8px] font-mono tracking-[0.4em] text-indigo-500 font-bold uppercase">Technologies</span>
             </div>
           </Link>

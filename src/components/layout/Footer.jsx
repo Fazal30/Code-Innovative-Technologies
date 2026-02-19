@@ -46,7 +46,7 @@ export default function Footer() {
       {/* 1. BACKGROUND TEXT DECOR (CYBERPUNK FEEL) */}
       <div className="absolute top-10 left-0 w-full whitespace-nowrap opacity-[0.02] pointer-events-none select-none">
         <span className="text-[15rem] font-black italic tracking-tighter uppercase">
-          MINTWAYS TECHNOLOGIES MINTWAYS TECHNOLOGIES
+          Code Innovative Technologies
         </span>
       </div>
 
@@ -125,7 +125,7 @@ export default function Footer() {
               </div>
               <div className="group cursor-pointer">
                 <p className="text-[10px] text-zinc-600 uppercase font-black mb-1">Encrypted_Mail</p>
-                <a href="mailto:info@mintwaystech.com" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors">info@mintwaystech.com</a>
+                <a href="mailto:hr@codeinnovativetechnologies.com" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors">hr@codeinnovativetechnologies.com</a>
               </div>
               <div className="flex gap-3 pt-4">
                 {[
@@ -168,7 +168,7 @@ export default function Footer() {
               <span>Uptime: 99.99%</span>
             </div>
             <p className="text-[10px] text-zinc-600 uppercase tracking-widest font-bold">
-              © {currentYear} Mintways Technologies // Designed for the future
+              © {currentYear} Code Innovative Technologies // Designed for the future
             </p>
           </div>
 
