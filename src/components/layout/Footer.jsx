@@ -69,8 +69,8 @@ export default function Footer() {
                 <div className="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-[#ccff00]" />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-black tracking-tighter leading-none">MINTWAYS</span>
-                <span className="text-[8px] font-mono tracking-[0.4em] text-[#ccff00] uppercase mt-1 italic">Innovative_Tech</span>
+                <span className="text-2xl font-black tracking-tighter leading-none">Code</span>
+                <span className="text-[8px] font-mono tracking-[0.4em] text-[#ccff00] uppercase mt-1 italic">Innovative Technologies</span>
               </div>
             </Link>
             
@@ -128,7 +128,7 @@ export default function Footer() {
               </div>
               <div className="group cursor-pointer">
                 <p className="text-[9px] text-zinc-600 uppercase font-black mb-1 tracking-widest">Global_Mail</p>
-                <a href="mailto:hr@mintwaystech.com" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors underline decoration-white/5">hr@mintwaystech.com</a>
+                <a href="mailto:hr@codeinnovativetechnologies.com" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors underline decoration-white/5">hr@codeinnovativetechnologies.com</a>
               </div>
               
               {/* SOCIAL MATRIX */}
@@ -170,7 +170,8 @@ export default function Footer() {
               <span className="text-zinc-600 tracking-tighter">LATENCY: 14ms</span>
             </div>
             <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-bold">
-              © {currentYear} MINTWAYS TECH // ALL_RIGHTS_RESERVED_v4
+              © {currentYear} CODE
+Innovative Technologies // ALL_RIGHTS_RESERVED_v4
             </p>
           </div>
 

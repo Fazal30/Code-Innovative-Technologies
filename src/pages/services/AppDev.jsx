@@ -134,7 +134,7 @@ export default function AppDev() {
             <div className="w-3 h-3 rounded-full bg-green-500" />
           </div>
           <div className="p-10 font-mono">
-            <div className="text-indigo-400 mb-4">admin@mintways:~$ <span className="text-white">fetch stack --detailed</span></div>
+            <div className="text-indigo-400 mb-4">admin@CODEInnovativeTechnologies:~$ <span className="text-white">fetch stack --detailed</span></div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
                 { label: "Frontend", val: "React/Next.js" },

@@ -3,7 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
   FaBars, FaTimes, FaCode, FaMicrochip, 
-  FaShieldAlt, FaTerminal, FaCircle, FaLongArrowAltRight
+  FaShieldAlt, FaTerminal, FaCircle, FaLongArrowAltRight, FaBrain, 
+  FaDatabase, FaNetworkWired, FaCube
 } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdGraphicEq, MdSettingsInputComponent } from 'react-icons/md';
@@ -32,10 +33,56 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   const serviceLinks = [
-    { title: "App Forge", desc: "Next-gen architecture", icon: <FaCode />, path: "/services/app-dev", color: "from-blue-500 to-indigo-600" },
-    { title: "Cyber Strategy", desc: "Strategic IT audits", icon: <FaMicrochip />, path: "/services/consulting", color: "from-[#ccff00] to-emerald-600" },
-    { title: "Protocol Security", desc: "Enterprise protection", icon: <FaShieldAlt />, path: "/services/products", color: "from-red-600 to-orange-600" },
-  ];
+  { 
+    title: "App Forge", 
+    desc: "Architecting high-velocity platforms with sub-second latency and horizontal scale.", 
+    icon: <FaCode />, 
+    path: "/services/app-dev", 
+    color: "from-blue-600 to-indigo-600",
+    tag: "PRODUCT_ENG"
+  },
+  { 
+    title: "Neural Core", 
+    desc: "Deploying autonomous AI agents and LLM-integrated systems into production workflows.", 
+    icon: <FaBrain />, 
+    path: "/services/ai-automation", 
+    color: "from-purple-600 to-pink-600",
+    tag: "AI_TACTICAL"
+  },
+  { 
+    title: "Cyber Strategy", 
+    desc: "Strategic IT audits and digital transformation roadmaps for enterprise modernization.", 
+    icon: <FaMicrochip />, 
+    path: "/services/consulting", 
+    color: "from-[#ccff00] to-emerald-600",
+    tag: "ADVISORY"
+  },
+  { 
+    title: "Protocol Security", 
+    desc: "Military-grade penetration testing and hardened zero-trust architecture deployment.", 
+    icon: <FaShieldAlt />, 
+    path: "/services/security", 
+    color: "from-red-600 to-orange-600",
+    tag: "DEFENSE"
+  },
+  { 
+    title: "Blockchain Mesh", 
+    desc: "Decentralized protocols, smart contract auditing, and Web3 infrastructure scaling.", 
+    icon: <FaCube />, 
+    path: "/services/web3", 
+    color: "from-cyan-500 to-blue-500",
+    tag: "DECENTRAL_OPS"
+  },
+  
+  { 
+    title: "Data Intelligence", 
+    desc: "Converting raw telemetry into predictive insights via advanced data engineering.", 
+    icon: <FaDatabase />, 
+    path: "/services/products", 
+    color: "from-amber-500 to-orange-500",
+    tag: "ANALYTICS"
+  },
+];
 
   return (
     <header className="fixed top-0 w-full z-[100] selection:bg-[#ccff00] selection:text-black">

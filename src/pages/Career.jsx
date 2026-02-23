@@ -78,7 +78,8 @@ export default function Career() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-emerald-400 to-white">WARRIORS.</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-500 text-lg md:text-xl font-light mb-12">
-            Mintways isn't a workplace. It's a high-stakes engineering forge for the top 1% of digital talent. We build systems that define industries.
+            CODE
+Innovative Technologies isn't a workplace. It's a high-stakes engineering forge for the top 1% of digital talent. We build systems that define industries.
           </p>
           
           {/* Real-time Stats */}
@@ -334,7 +335,8 @@ export default function Career() {
           <span className="text-[#ccff00]">04</span> Technical_Philosophy
         </h4>
         <div className="space-y-4">
-          <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 italic">Why Mintways? Tell us about a system you built that didn't break under pressure.</label>
+          <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 italic">Why CODE
+Innovative Technologies? Tell us about a system you built that didn't break under pressure.</label>
           <textarea rows="5" className="w-full bg-black/50 border border-white/10 rounded-[2rem] p-8 outline-none focus:border-[#ccff00] transition-colors text-zinc-300 font-light resize-none" placeholder="Describe your architectural decisions..."></textarea>
         </div>
       </div>
