@@ -21,6 +21,7 @@ import AiAutomation from './pages/services/AiAutomation'; // NEW
 import Security from './pages/services/Security';       // NEW
 import Web3 from './pages/services/Web3';               // NEW
 import DataIntelligence from './pages/services/DataIntelligence'; // NEW
+import WebD from './pages/services/WebD';
 
 /**
  * Ensures page resets to top on every route change
@@ -114,7 +115,7 @@ function App() {
         {/* WHATSAPP ACTION */}
         <div className="fixed bottom-8 right-8 z-50 group">
           <motion.a
-            href="https://wa.me/919334061194"
+            href="https://wa.me/919620996689"
             target="_blank"
             rel="noreferrer"
             initial={{ scale: 0 }}
@@ -157,6 +158,7 @@ function RoutesWithAnimation() {
         <Route path="/contact" element={<Contact />} />
 
         {/* Service Dossiers */}
+        <Route path="/services/web-dev" element={<WebD />} />
         <Route path="/services/app-dev" element={<AppDev />} />
         <Route path="/services/consulting" element={<Consulting />} />
         <Route path="/services/products" element={<Products />} />

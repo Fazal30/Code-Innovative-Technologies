@@ -73,7 +73,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <p className="text-[8px] uppercase tracking-[0.3em] text-zinc-600 font-black">Secure Mail</p>
-                  <p className="text-white text-sm font-bold">hr@codeinnovativetechnologies.com</p>
+                  <p className="text-white text-sm font-bold">Info@codeinnovativetechnologies.com</p>
                 </div>
               </div>
               
@@ -83,7 +83,7 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <p className="text-[8px] uppercase tracking-[0.3em] text-zinc-600 font-black">Base Station</p>
-                  <p className="text-white text-sm font-bold">Global Distributed Hub</p>
+                  <p className="text-white text-sm font-bold">Electronic City, Bengaluru, Karnataka 560100</p>
                 </div>
               </div>
             </div>

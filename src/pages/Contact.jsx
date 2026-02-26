@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaTerminal, FaEnvelope, FaMapMarkerAlt, FaDiscord, FaGithub, 
+  FaWhatsapp, FaEnvelope, FaDiscord, FaGithub, FaInstagram,
   FaLinkedin, FaPaperPlane, FaShieldAlt, FaTwitter, FaSatellite, 
-  FaFingerprint, FaLock, FaWifi, FaBroadcastTower, FaMicrochip, FaGlobe
+  FaFingerprint, FaLock, FaBroadcastTower, FaMicrochip, FaGlobe
 } from 'react-icons/fa';
 
 export default function Contact() {
@@ -24,14 +24,7 @@ export default function Contact() {
     setStatus('sending');
     setTimeout(() => setStatus('success'), 2500);
   };
-
-  const socialLinks = [
-    { icon: FaLinkedin, link: "https://linkedin.com/company/codeinnovative", label: "LinkedIn" },
-    { icon: FaGithub, link: "https://github.com/codeinnovative", label: "GitHub" },
-    { icon: FaTwitter, link: "https://twitter.com/codeinnovative", label: "X_Terminal" },
-    { icon: FaDiscord, link: "https://discord.gg/codeinnovative", label: "Comms_Node" }
-  ];
-
+  
   return (
     <div className="bg-[#020202] text-white min-h-screen pt-40 pb-20 selection:bg-[#ccff00] selection:text-black overflow-hidden relative">
       
@@ -52,7 +45,7 @@ export default function Contact() {
               UPLINK_ESTABLISHED
             </span>
             <span className="flex items-center gap-2">
-              <FaGlobe className="text-[10px]" /> NODE: NOIDA_STATION_01
+              <FaGlobe className="text-[10px]" /> NODE: BENGALURU_STATION_01
             </span>
             <span className="hidden sm:block">LATENCY: {latency}</span>
             <span className="text-[#ccff00]/60">{time}</span>
@@ -92,7 +85,7 @@ export default function Contact() {
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-[#ccff00] mb-1">Base_Coordinates</h4>
-                    <p className="text-white text-lg font-bold tracking-tight">Noida Sector 62, IN</p>
+                    <p className="text-white text-lg font-bold tracking-tight">Electronic City, Bengaluru, Karnataka 560100</p>
                   </div>
                   <FaSatellite className="text-zinc-800 text-2xl" />
                 </div>
@@ -115,31 +108,31 @@ export default function Contact() {
 
             {/* CONNECTIVITY CHANNELS */}
             <div className="grid grid-cols-2 gap-4">
-              <a href="mailto:hr@codeinnovative.tech" className="group p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-[#ccff00]/50 transition-all">
+              <a href="mailto:Info@codeinnovativetechnologies.com" className="group p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-[#ccff00]/50 transition-all">
                 <FaEnvelope className="text-[#ccff00] text-xs mb-3 group-hover:scale-110 transition-transform" />
                 <p className="text-[8px] font-mono text-zinc-600 uppercase mb-1">E_Mail</p>
-                <p className="text-[10px] font-bold text-zinc-300 group-hover:text-white truncate">hr@codeinnovativetechnologies.com</p>
+                <p className="text-[10px] font-bold text-zinc-300 group-hover:text-white truncate">Info@codeinnovativetechnologies.com</p>
               </a>
               <a href="tel:+918042213489" className="group p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-blue-500/50 transition-all">
                 <FaMicrochip className="text-blue-500 text-xs mb-3 group-hover:scale-110 transition-transform" />
                 <p className="text-[8px] font-mono text-zinc-600 uppercase mb-1">Analog</p>
-                <p className="text-[10px] font-bold text-zinc-300 group-hover:text-white truncate">+91 80 4221 3489</p>
+                <p className="text-[10px] font-bold text-zinc-300 group-hover:text-white truncate">+91 962 099 6689</p>
               </a>
             </div>
 
             {/* SOCIAL DOCK */}
             <div className="flex items-center gap-3 pt-4">
-              {socialLinks.map((social, i) => (
+               {[
+               { icon: FaInstagram, link: "https://www.instagram.com/code_innovativetechnologies?igsh=c2h2cmVreHBnY3Y5&utm_source=qr" },
+                { icon: FaWhatsapp, link: "https://wa.me/919620996689" },
+              ].map((social, i) => (
                 <motion.a
                   key={i}
+                  whileHover={{ y: -8, rotate: 8 }}
                   href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -4, backgroundColor: 'rgba(204,255,0,0.1)', borderColor: '#ccff00' }}
-                  className="w-10 h-10 rounded-lg border border-white/5 bg-zinc-900/50 flex items-center justify-center text-zinc-500 transition-all"
-                  title={social.label}
+                  className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-amber-500 hover:border-amber-500 transition-all shadow-xl group"
                 >
-                  <social.icon className="text-sm" />
+                  <social.icon size={20} className="group-hover:scale-110 transition-transform" />
                 </motion.a>
               ))}
             </div>

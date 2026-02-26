@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
-  FaPhoneAlt, FaEnvelope, FaLinkedin, FaGithub, 
-  FaTwitter, FaDiscord, FaArrowUp, FaTerminal, FaShieldAlt,
-  FaLongArrowAltRight, FaGlobeAmericas
+ FaArrowUp, FaShieldAlt,
+  FaLongArrowAltRight, FaGlobeAmericas, FaInstagram, FaWhatsapp 
 } from 'react-icons/fa';
 import { MdSettingsInputComponent, MdGraphicEq } from 'react-icons/md';
 
@@ -25,25 +24,25 @@ export default function Footer() {
         { name: "Home", path: "/" },
         { name: "About Us", path: "/about" },
         { name: "Services", path: "/services/app-dev" },
-        { name: "Portfolio", path: "/portfolio" }
+        { name: "Portfolio", path: "#" }
       ] 
     },
     { 
       title: "Ecosystem", 
       items: [
         { name: "Careers", path: "/career" },
-        { name: "Open Source", path: "https://github.com/mintways" },
-        { name: "Tech Stack", path: "/tech" },
-        { name: "Community", path: "/discord" }
+        { name: "Open Source", path: "#" },
+        { name: "Tech Stack", path: "#" },
+        { name: "Community", path: "#" }
       ] 
     },
     { 
       title: "Legal_Node", 
       items: [
-        { name: "Privacy Policy", path: "/privacy" },
-        { name: "SLA", path: "/sla" },
-        { name: "SOC2 Report", path: "/security" },
-        { name: "Terms", path: "/terms" }
+        { name: "Privacy Policy", path: "#" },
+        { name: "SLA", path: "#" },
+        { name: "SOC2 Report", path: "#" },
+        { name: "Terms", path: "#" }
       ] 
     }
   ];
@@ -124,26 +123,28 @@ export default function Footer() {
             <div className="space-y-6">
               <div className="group cursor-pointer">
                 <p className="text-[9px] text-zinc-600 uppercase font-black mb-1 tracking-widest">Secure_Line</p>
-                <a href="tel:+918042213489" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors">+91 80 4221 3489</a>
+                <a href="tel:+919620996689" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors">+91 9620996689</a>
               </div>
               <div className="group cursor-pointer">
                 <p className="text-[9px] text-zinc-600 uppercase font-black mb-1 tracking-widest">Global_Mail</p>
-                <a href="mailto:hr@codeinnovativetechnologies.com" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors underline decoration-white/5">hr@codeinnovativetechnologies.com</a>
+                <a href="mailto:Info@codeinnovativetechnologies.com" className="text-sm font-bold group-hover:text-[#ccff00] transition-colors underline decoration-white/5">Info@codeinnovativetechnologies.com</a>
               </div>
               
               {/* SOCIAL MATRIX */}
               <div className="flex gap-3 pt-2">
-                {[FaGithub, FaLinkedin, FaTwitter, FaDiscord].map((Icon, i) => (
-                  <motion.a 
-                    key={i} 
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    whileTap={{ scale: 0.9 }}
-                    href="#" 
-                    className="w-10 h-10 rounded-lg bg-zinc-900 border border-white/5 flex items-center justify-center text-zinc-500 hover:text-[#ccff00] hover:border-[#ccff00]/40 transition-all"
-                  >
-                    <Icon size={16} />
-                  </motion.a>
-                ))}
+                {[
+                { icon: FaInstagram, link: "https://www.instagram.com/code_innovativetechnologies?igsh=c2h2cmVreHBnY3Y5&utm_source=qr" },
+                { icon: FaWhatsapp, link: "https://wa.me/919620996689" },
+              ].map((social, i) => (
+                <motion.a
+                  key={i}
+                  whileHover={{ y: -8, rotate: 8 }}
+                  href={social.link}
+                  className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-amber-500 hover:border-amber-500 transition-all shadow-xl group"
+                >
+                  <social.icon size={20} className="group-hover:scale-110 transition-transform" />
+                </motion.a>
+              ))}
               </div>
             </div>
           </div>

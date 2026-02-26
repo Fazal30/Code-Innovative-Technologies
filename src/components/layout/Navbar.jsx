@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { 
   FaBars, FaTimes, FaCode, FaMicrochip, 
   FaShieldAlt, FaTerminal, FaCircle, FaLongArrowAltRight, FaBrain, 
-  FaDatabase, FaNetworkWired, FaCube, FaChevronDown, FaSearch
+  FaDatabase, FaNetworkWired, FaCube, FaChevronDown, FaSearch, FaRocket
 } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdGraphicEq, MdSettingsInputComponent } from 'react-icons/md';
@@ -13,7 +13,6 @@ export default function Navbar() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [activeMobileSub, setActiveMobileSub] = useState(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { scrollY } = useScroll();
@@ -25,6 +24,18 @@ export default function Navbar() {
     ["rgba(3, 3, 3, 0)", "rgba(3, 3, 3, 0.98)"]
   );
 
+  // Keyboard Shortcut for Terminal (CMD+K or CTRL+K)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
@@ -33,13 +44,50 @@ export default function Navbar() {
 
   const isActive = (path) => location.pathname === path;
 
+  // --- UPDATED SERVICE LINKS WITH WEBD ---
   const serviceLinks = [
-    { title: "App Forge", desc: "High-velocity platforms & horizontal scale.", icon: <FaCode />, path: "/services/app-dev", tag: "PRODUCT_ENG" },
-    { title: "Neural Core", desc: "Autonomous AI agents & production workflows.", icon: <FaBrain />, path: "/services/ai-automation", tag: "AI_TACTICAL" },
-    { title: "Cyber Strategy", desc: "Strategic audits & digital transformation.", icon: <FaMicrochip />, path: "/services/consulting", tag: "ADVISORY" },
-    { title: "Protocol Security", desc: "Military-grade penetration testing.", icon: <FaShieldAlt />, path: "/services/security", tag: "DEFENSE" },
-    { title: "Blockchain Mesh", desc: "Web3 infrastructure & smart contracts.", icon: <FaCube />, path: "/services/web3", tag: "DECENTRAL_OPS" },
-    { title: "Data Intelligence", desc: "Predictive insights & data engineering.", icon: <FaDatabase />, path: "/services/products", tag: "ANALYTICS" },
+    { 
+      title: "Web Engineering", 
+      desc: "High-velocity platforms & sub-second latency.", 
+      icon: <FaRocket />, 
+      path: "/services/web-dev", // Ensure this matches your WebD.jsx route
+      tag: "CORE_FORGE" 
+    },
+    { 
+      title: "Neural Core", 
+      desc: "Autonomous AI agents & production workflows.", 
+      icon: <FaBrain />, 
+      path: "/services/ai-automation", 
+      tag: "AI_TACTICAL" 
+    },
+    { 
+      title: "Protocol Security", 
+      desc: "Military-grade penetration testing.", 
+      icon: <FaShieldAlt />, 
+      path: "/services/security", 
+      tag: "DEFENSE" 
+    },
+    { 
+      title: "Blockchain Mesh", 
+      desc: "Web3 infrastructure & smart contracts.", 
+      icon: <FaCube />, 
+      path: "/services/web3", 
+      tag: "DECENTRAL_OPS" 
+    },
+    { 
+      title: "Cyber Strategy", 
+      desc: "Strategic audits & digital transformation.", 
+      icon: <FaMicrochip />, 
+      path: "/services/consulting", 
+      tag: "ADVISORY" 
+    },
+    { 
+      title: "Data Intelligence", 
+      desc: "Predictive insights & data engineering.", 
+      icon: <FaDatabase />, 
+      path: "/services/products", 
+      tag: "ANALYTICS" 
+    },
   ];
 
   const menuVariants = {
@@ -67,8 +115,8 @@ export default function Navbar() {
           </div>
         </div>
         <div className="flex gap-8">
-          <span className="text-zinc-800">LATENCY: 14MS</span>
-          <span className="text-[#ccff00]/50 tracking-tighter">OS_V: 4.2.0_MINT</span>
+          <span className="text-zinc-800 uppercase">Status: Nominal</span>
+          <span className="text-[#ccff00]/50 tracking-tighter uppercase">Protocol: v4.2.0</span>
         </div>
       </div>
 
@@ -85,7 +133,7 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black tracking-tighter text-white leading-none">CODE</span>
-              <span className="text-[7px] font-mono tracking-[0.5em] text-[#ccff00] font-bold uppercase mt-1">Innovative Technologies</span>
+              <span className="text-[7px] font-mono tracking-[0.5em] text-[#ccff00] font-bold uppercase mt-1 italic">Full Stack Engineering</span>
             </div>
           </Link>
 
@@ -104,20 +152,27 @@ export default function Navbar() {
               <div className={`flex items-center gap-2 cursor-pointer transition-colors ${isServicesOpen ? 'text-[#ccff00]' : 'hover:text-white'}`}>
                 SERVICES <IoIosArrowDown className={`transition-transform ${isServicesOpen ? 'rotate-180' : ''}`} />
               </div>
+              
               <AnimatePresence>
                 {isServicesOpen && (
-                  <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 15 }} className="absolute top-full left-1/2 -translate-x-1/2 w-[480px] bg-[#080808] border border-white/10 p-2 mt-6 rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.9)]">
-                    <div className="grid grid-cols-1 gap-1">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 15 }} 
+                    className="absolute top-full left-1/2 -translate-x-1/2 w-[520px] bg-[#080808] border border-white/10 p-3 mt-6 rounded-[2rem] shadow-[0_40px_100px_rgba(0,0,0,0.9)]"
+                  >
+                    <div className="grid grid-cols-1 gap-2">
                       {serviceLinks.map((s, idx) => (
-                        <Link key={idx} to={s.path} className="flex items-center gap-5 p-4 rounded-2xl hover:bg-white/5 transition-all group border border-transparent hover:border-[#ccff00]/10">
+                        <Link key={idx} to={s.path} className="flex items-center gap-5 p-4 rounded-2xl hover:bg-white/[0.03] transition-all group border border-transparent hover:border-[#ccff00]/10">
                           <div className="w-12 h-12 rounded-xl bg-zinc-900 flex items-center justify-center text-[#ccff00] text-xl border border-white/5 group-hover:bg-[#ccff00] group-hover:text-black transition-all">
                             {s.icon}
                           </div>
-                          <div>
-                            <div className="text-[10px] font-black text-white tracking-widest uppercase mb-1">{s.title}</div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-[10px] font-black text-white tracking-widest uppercase">{s.title}</span>
+                              <span className="text-[7px] font-mono text-zinc-600 bg-white/5 px-2 py-0.5 rounded group-hover:text-[#ccff00] transition-colors">{s.tag}</span>
+                            </div>
                             <div className="text-[8px] text-zinc-500 font-mono uppercase leading-tight">{s.desc}</div>
                           </div>
-                          <FaLongArrowAltRight className="ml-auto opacity-0 group-hover:opacity-100 text-[#ccff00] transition-all" />
+                          <FaLongArrowAltRight className="opacity-0 group-hover:opacity-100 text-[#ccff00] translate-x-[-10px] group-hover:translate-x-0 transition-all" />
                         </Link>
                       ))}
                     </div>
@@ -129,8 +184,8 @@ export default function Navbar() {
 
           {/* ACTION AREA */}
           <div className="flex items-center gap-4 lg:gap-8">
-            <button onClick={() => setIsSearchOpen(true)} className="w-10 h-10 lg:w-auto lg:px-5 flex items-center justify-center gap-3 bg-zinc-900 text-zinc-500 rounded-xl border border-white/5 hover:border-[#ccff00]/40 transition-all">
-              <FaSearch size={14} className="lg:text-[#ccff00]" />
+            <button onClick={() => setIsSearchOpen(true)} className="w-10 h-10 lg:w-auto lg:px-5 flex items-center justify-center gap-3 bg-zinc-900 text-zinc-500 rounded-xl border border-white/5 hover:border-[#ccff00]/40 transition-all group">
+              <FaSearch size={14} className="group-hover:text-[#ccff00] transition-colors" />
               <span className="hidden lg:block text-[8px] font-mono">CMD + K</span>
             </button>
 
@@ -149,7 +204,7 @@ export default function Navbar() {
         </div>
       </motion.nav>
 
-      {/* --- MOBILE TERMINAL MENU --- */}
+      {/* --- MOBILE MENU --- */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div 
@@ -159,14 +214,14 @@ export default function Navbar() {
             <div className="flex justify-between items-center mb-10 border-b border-white/5 pb-6">
               <div className="flex flex-col">
                 <span className="text-white font-black text-xl tracking-tighter italic">MINT_TERMINAL_V4</span>
-                <span className="text-[8px] font-mono text-[#ccff00]">AUTH_LEVEL: ROOT_ACCESS</span>
+                <span className="text-[8px] font-mono text-[#ccff00]">PATH: /ROOT/SERVICES</span>
               </div>
               <button onClick={() => setIsMobileMenuOpen(false)} className="w-12 h-12 rounded-2xl bg-white/5 text-[#ccff00] flex items-center justify-center border border-white/10">
                 <FaTimes size={18} />
               </button>
             </div>
 
-            <nav className="flex flex-col gap-4 overflow-y-auto custom-scrollbar pr-2">
+            <nav className="flex flex-col gap-4 overflow-y-auto">
               {['Home', 'About', 'Career', 'Contact'].map((item) => (
                 <motion.div key={item} variants={itemVariants}>
                   <Link 
@@ -175,39 +230,31 @@ export default function Navbar() {
                     className="flex items-center justify-between text-4xl font-black text-white py-2 group"
                   >
                     <span className="group-hover:text-[#ccff00] transition-colors uppercase">{item}</span>
-                    <FaLongArrowAltRight className="text-[#ccff00]/20 group-hover:text-[#ccff00]" />
+                    <FaLongArrowAltRight className="text-zinc-800" />
                   </Link>
                 </motion.div>
               ))}
 
-              {/* Mobile Services Section */}
+              {/* Mobile Web Engineering Focus */}
               <motion.div variants={itemVariants} className="mt-8 border-t border-white/5 pt-8">
                 <h3 className="text-[10px] font-mono text-zinc-500 tracking-[0.5em] mb-6 uppercase italic">Protocol_Services</h3>
-                <div className="grid gap-3">
+                <div className="grid grid-cols-1 gap-3">
                   {serviceLinks.map((s, i) => (
                     <Link 
                       key={i} to={s.path} onClick={() => setIsMobileMenuOpen(false)}
-                      className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center gap-4 active:bg-[#ccff00]/10"
+                      className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center gap-4"
                     >
-                      <div className="text-[#ccff00] text-lg">{s.icon}</div>
-                      <div>
+                      <div className="text-[#ccff00] text-lg bg-black p-2 rounded-lg">{s.icon}</div>
+                      <div className="flex-1">
                         <div className="text-[11px] font-black text-white uppercase">{s.title}</div>
-                        <div className="text-[8px] text-zinc-500 font-mono">{s.tag}</div>
+                        <div className="text-[8px] text-zinc-600 font-mono">{s.tag}</div>
                       </div>
-                      <FaChevronDown className="-rotate-90 ml-auto text-zinc-700" size={10} />
+                      <FaChevronDown className="-rotate-90 text-zinc-800" size={10} />
                     </Link>
                   ))}
                 </div>
               </motion.div>
             </nav>
-
-            <div className="mt-auto pt-8 flex justify-between items-center font-mono text-[8px] text-zinc-600 border-t border-white/5">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span>UPLINK_STABLE</span>
-              </div>
-              <span>©2026_MINT_LOGIC</span>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -215,17 +262,32 @@ export default function Navbar() {
       {/* TERMINAL SEARCH (CMD+K) */}
       <AnimatePresence>
         {isSearchOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[1100] bg-black/90 backdrop-blur-2xl flex items-start justify-center p-4 md:p-20" onClick={() => setIsSearchOpen(false)}>
-            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} className="w-full max-w-2xl bg-zinc-950 border border-white/10 rounded-[2.5rem] p-8 mt-20" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center gap-4 mb-8 text-zinc-500 font-mono text-xs italic">
-                <FaTerminal className="text-[#ccff00]" /> <span>SYSTEM_BROADCAST_SEARCH</span>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[1100] bg-black/95 backdrop-blur-2xl flex items-start justify-center p-4 md:p-20" onClick={() => setIsSearchOpen(false)}>
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} 
+              className="w-full max-w-2xl bg-[#050505] border border-white/10 rounded-[2.5rem] p-8 mt-20 shadow-[0_0_100px_rgba(0,0,0,1)]" 
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4 text-zinc-500 font-mono text-xs italic">
+                  <FaTerminal className="text-[#ccff00]" /> <span>SYSTEM_BROADCAST_SEARCH</span>
+                </div>
+                <button onClick={() => setIsSearchOpen(false)} className="text-zinc-700 hover:text-white transition-colors">ESC</button>
               </div>
-              <input autoFocus placeholder="EXECUTE_COMMAND..." className="w-full bg-transparent border-none outline-none text-3xl md:text-5xl font-black text-white placeholder:text-zinc-900 uppercase tracking-tighter" />
-              <div className="grid grid-cols-2 gap-4 mt-12">
-                {['/services', '/architect', '/security', '/ai_core'].map(tag => (
-                  <div key={tag} className="p-4 bg-white/5 border border-white/5 rounded-xl font-mono text-[10px] text-zinc-500 hover:text-[#ccff00] hover:border-[#ccff00]/30 transition-all cursor-pointer">
+              <input 
+                autoFocus 
+                placeholder="SEARCH_PLATFORM..." 
+                className="w-full bg-transparent border-none outline-none text-3xl md:text-5xl font-black text-white placeholder:text-zinc-900 uppercase tracking-tighter" 
+              />
+              <div className="h-px bg-white/5 my-8" />
+              <div className="flex flex-wrap gap-2">
+                {['/web-dev', '/ai', '/security', '/career'].map(tag => (
+                  <Link 
+                    key={tag} to={tag} onClick={() => setIsSearchOpen(false)}
+                    className="px-4 py-2 bg-white/5 border border-white/5 rounded-full font-mono text-[9px] text-zinc-500 hover:text-[#ccff00] hover:border-[#ccff00]/30 transition-all"
+                  >
                     {tag}
-                  </div>
+                  </Link>
                 ))}
               </div>
             </motion.div>
