@@ -1,80 +1,109 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Identity */
-  --color-brand-red: #D32F2F;
-  --color-brand-blue: #1976D2;
+  /* Permanent Dark Tech Palette */
+  --color-main-bg: #020202;
+  --color-card-bg: #080808;
+  --color-neon-lime: #ccff00;
+  --color-electric-blue: #0066ff;
+  --color-deep-zinc: #18181b;
   
-  /* Modern Tech Palette */
-  --color-electric-indigo: #6366f1;
-  --color-toxic-emerald: #ccff00;
-  --color-cyber-cyan: #22d3ee;
-  
-  /* Surface Colors */
-  --color-surface: #ffffff;
-  --color-surface-dark: #0b1120;
-  
-  /* Custom Animations */
-  --animate-scan: scan 3s ease-in-out infinite;
-  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  /* Typography - Modern Tech Stacks */
+  --font-sans: "Inter", "system-ui", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-display: "Space Grotesk", sans-serif;
 
-  @keyframes scan {
-    0%, 100% { transform: translateY(-10%); opacity: 0.2; }
-    50% { transform: translateY(110%); opacity: 0.8; }
+  /* Enhanced Animations */
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-glitch: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 }
 
-/* Base Styling */
+/* Base Styling - Locked to Dark Mode */
 @layer base {
   html {
     scroll-behavior: smooth;
-    @apply antialiased;
+    cursor: default;
+    background-color: var(--color-main-bg);
   }
 
   body {
-    @apply bg-surface text-slate-900 transition-colors duration-500 font-sans;
+    background-color: var(--color-main-bg);
+    color: #a1a1aa; /* zinc-400 */
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
-  [data-theme='dark'] body {
-    @apply bg-[#030303] text-slate-100;
+  /* Display Headings - High Contrast */
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    color: #ffffff;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  /* Mono fonts for code/diagnostics */
+  code, pre, .terminal-text {
+    font-family: var(--font-mono);
   }
 }
 
-/* Custom Scrollbar */
+/* Custom "Ghost" Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  /* Dynamic scrollbar that changes color based on theme */
-  @apply bg-slate-300 rounded-full border-4 border-solid border-transparent bg-clip-padding transition-all;
+  background: #27272a;
+  border-radius: 10px;
+  transition: all 0.3s ease;
 }
 
-[data-theme='dark'] ::-webkit-scrollbar-thumb {
-  @apply bg-indigo-500/30 hover:bg-indigo-500/60;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon-lime);
 }
 
-/* Utility Classes for Iridescence */
+/* Selection Color - Brand Contrast */
+::selection {
+  background-color: var(--color-neon-lime);
+  color: #000000;
+}
+
+/* Advanced Utility Classes */
 @layer utilities {
-  .text-glow {
-    text-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+  .text-glow-blue {
+    text-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
+  }
+
+  .text-glow-lime {
+    text-shadow: 0 0 15px rgba(204, 255, 0, 0.3);
   }
   
-  .glass-effect {
-    @apply backdrop-blur-xl bg-white/70 dark:bg-black/70 border border-white/10;
+  .border-gradient {
+    border-image: linear-gradient(to right, #1e1e1e, #3f3f46, #1e1e1e) 1;
   }
 
-  .bg-grid-pattern {
-    background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
-    background-size: 40px 40px;
+  .mask-fade-out {
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
   }
-}
 
-/* Selection Color */
-::selection {
-  @apply bg-indigo-500/30 text-indigo-200;
+  .bg-dot-pattern {
+    background-image: radial-gradient(#27272a 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
 }

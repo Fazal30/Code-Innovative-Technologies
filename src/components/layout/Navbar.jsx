@@ -133,7 +133,7 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black tracking-tighter text-white leading-none">CODE</span>
-              <span className="text-[7px] font-mono tracking-[0.5em] text-[#ccff00] font-bold uppercase mt-1 italic">Full Stack Engineering</span>
+              <span className="text-[7px] font-mono tracking-[0.5em] text-[#ccff00] font-bold uppercase mt-1 italic">Innovative Technologies</span>
             </div>
           </Link>
 
