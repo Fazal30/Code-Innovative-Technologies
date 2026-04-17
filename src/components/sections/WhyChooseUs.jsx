@@ -33,18 +33,11 @@ const features = [
 ];
 
 export default function WhyChooseUs() {
-  const [temp, setTemp] = useState(32);
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
   });
-  useEffect(() => {
-  const storedTemp = localStorage.getItem('system_temp');
-  if (storedTemp) {
-    setTemp(storedTemp);
-  }
-}, []);
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 200]);
@@ -107,17 +100,15 @@ export default function WhyChooseUs() {
                 
                 <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-between">
                   <div className="flex justify-between items-start">
-  <div className="space-y-1">
-    <div className="flex items-center gap-2">
-      <span className="w-2 h-2 bg-[#ccff00] rounded-full animate-ping" />
-      <span className="text-[10px] font-mono text-[#ccff00] uppercase tracking-widest">
-        Core_Temp: {temp}°C
-      </span>
-    </div>
-    <div className="text-white text-3xl font-black font-mono tracking-tighter">8.4 THz</div>
-  </div>
-  <FaMicrochip className="text-white/20 text-4xl" />
-</div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-[#ccff00] rounded-full animate-ping" />
+                        <span className="text-[10px] font-mono text-[#ccff00] uppercase tracking-widest">Core_Temp: 32°C</span>
+                      </div>
+                      <div className="text-white text-3xl font-black font-mono tracking-tighter">8.4 THz</div>
+                    </div>
+                    <FaMicrochip className="text-white/20 text-4xl" />
+                  </div>
 
                   <div className="bg-black/40 border border-white/10 backdrop-blur-xl p-6 rounded-2xl">
                     <p className="text-[8px] font-mono text-zinc-500 uppercase tracking-[0.3em] mb-4">Neural_Network_Load</p>
