@@ -1,177 +1,228 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FaPaperPlane, FaEnvelope, FaMapMarkerAlt, FaTerminal, 
-  FaShieldAlt, FaWifi, FaLock, FaMicrochip 
+  FaShieldAlt, FaWifi, FaLock, FaMicrochip, FaGlobe, FaGhost
 } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function ContactForm() {
   const [logs, setLogs] = useState([]);
+  const [focusedField, setFocusedField] = useState(null);
 
-  // Simulated System Log
   useEffect(() => {
     const messages = [
-      "SYSTEM_READY", "ENCRYPTING_CHANNEL...", "ESTABLISHING_SECURE_TUNNEL", 
-      "READY_FOR_TRANSMISSION", "LATENCY_0.04ms"
+      "ESTABLISHING_HANDSHAKE...", "BYPASSING_FIREWALL_v2", "ENCRYPTING_PACKETS", 
+      "TUNNEL_STABLE_AES256", "UPLINK_READY", "NODES_ACTIVE: 142", "LATENCY_0.02ms"
     ];
     let i = 0;
     const interval = setInterval(() => {
-      setLogs(prev => [...prev.slice(-4), `> ${messages[i % messages.length]}`]);
+      setLogs(prev => [...prev.slice(-5), `[${new Date().toLocaleTimeString()}] ${messages[i % messages.length]}`]);
       i++;
-    }, 2500);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="relative py-24 lg:py-40 px-6 overflow-hidden bg-transparent">
+    <section className="relative py-20 lg:py-44 px-4 sm:px-10 overflow-hidden bg-[#020202] text-zinc-300">
       
-      {/* 1. CYBER BACKGROUND ELEMENTS */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#ccff00]/5 blur-[150px] rounded-full" />
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <motion.div 
+          animate={{ opacity: [0.05, 0.15, 0.05], scale: [1, 1.2, 1] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#ccff00]/10 blur-[120px] rounded-full" 
+        />
+        <div className="absolute inset-0 opacity-[0.03]" 
+          style={{ 
+            backgroundImage: `linear-gradient(#ccff00 1px, transparent 1px), linear-gradient(90deg, #ccff00 1px, transparent 1px)`,
+            backgroundSize: '40px 40px' 
+          }} 
+        />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-stretch">
           
-          {/* LEFT SIDE: SYSTEM STATUS (5 Columns) */}
-          <div className="lg:col-span-5 space-y-10">
+          <div className="lg:col-span-5 flex flex-col justify-center space-y-12">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              className="relative"
             >
-              <div className="flex items-center gap-3 text-[#ccff00] font-mono tracking-[0.4em] text-[10px] mb-6 uppercase font-black">
-                <FaTerminal className="animate-pulse" /> <span>Uplink_Initiation_v4.0</span>
+              {/* Responsive Header */}
+              <div className="flex items-center gap-3 text-[#ccff00] font-mono tracking-[0.4em] text-[10px] sm:text-xs mb-6 uppercase font-black">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ccff00] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ccff00]"></span>
+                </span>
+                <span>COMMS_PROTOCOL_ENCRYPTED</span>
               </div>
               
-              <h2 className="text-6xl md:text-8xl font-black text-white leading-[0.85] mb-8 tracking-tighter uppercase italic">
-                SECURE <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 to-zinc-800">UPLINK.</span>
+              <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.85] mb-8 tracking-tighter uppercase italic">
+                Get <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-zinc-100 to-zinc-500">In Touch.</span>
               </h2>
               
-              <p className="text-zinc-500 text-lg leading-relaxed max-w-md">
-                Deploy your requirements to our tactical engineering core. We specialize in high-stakes digital infrastructure and autonomous systems.
+              <p className="text-zinc-500 text-base sm:text-lg leading-relaxed max-w-md border-l border-[#ccff00]/20 pl-6">
+                Direct channel to our lead engineers. Response window: <span className="text-white">{'< 4 Hours'}</span>. 
+                Data integrity guaranteed via proprietary zero-trust tunneling.
               </p>
             </motion.div>
 
-            {/* LIVE SYSTEM LOGS */}
-            <div className="bg-black border border-white/5 p-6 rounded-2xl font-mono text-[10px] text-zinc-500 space-y-2">
-              <div className="flex justify-between border-b border-white/5 pb-2 mb-4">
-                <span className="text-zinc-400">CONNECTIVITY_LOG</span>
-                <span className="text-[#ccff00] animate-pulse">● LIVE</span>
+            {/* LIVE CONSOLE - Responsive: Hidden on small mobile, flex on others */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="hidden sm:block bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-5 rounded-2xl font-mono text-[9px] md:text-[11px] text-zinc-600 shadow-2xl group overflow-hidden"
+            >
+              <div className="flex justify-between items-center border-b border-white/5 pb-3 mb-3">
+                <div className="flex gap-1.5">
+                   <div className="w-2 h-2 rounded-full bg-zinc-800" />
+                   <div className="w-2 h-2 rounded-full bg-zinc-800" />
+                </div>
+                <span className="text-[10px] font-black tracking-widest text-[#ccff00]">LIVE_TERMINAL</span>
               </div>
-              {logs.map((log, i) => (
-                <p key={i} className={i === logs.length - 1 ? "text-[#ccff00]" : ""}>{log}</p>
-              ))}
-            </div>
+              <div className="space-y-1.5 min-h-[100px]">
+                {logs.map((log, i) => (
+                  <motion.p 
+                    initial={{ opacity: 0, x: -10 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    key={i} 
+                    className={i === logs.length - 1 ? "text-[#ccff00]" : ""}
+                  >
+                    {log}
+                  </motion.p>
+                ))}
+              </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
-              <div className="flex items-center gap-5 group cursor-pointer bg-white/[0.02] p-4 rounded-2xl border border-white/5 hover:border-[#ccff00]/30 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center text-[#ccff00] shadow-[0_0_15px_rgba(204,255,0,0.1)]">
-                  <FaEnvelope />
-                </div>
-                <div>
-                  <p className="text-[8px] uppercase tracking-[0.3em] text-zinc-600 font-black">Secure Mail</p>
-                  <p className="text-white text-sm font-bold">Info@codeinnovativetechnologies.com</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-5 group cursor-pointer bg-white/[0.02] p-4 rounded-2xl border border-white/5 hover:border-cyan-400/30 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center text-cyan-400">
-                  <FaMapMarkerAlt />
-                </div>
-                <div>
-                  <p className="text-[8px] uppercase tracking-[0.3em] text-zinc-600 font-black">Base Station</p>
-                  <p className="text-white text-sm font-bold">Electronic City, Bengaluru, Karnataka 560100</p>
-                </div>
-              </div>
+            {/* CONTACT CARDS */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+               {[
+                 { icon: <FaEnvelope />, label: 'Neural Link', val: 'Info@codeinnovativetechnologies.com', color: '#ccff00' },
+                 { icon: <FaGlobe />, label: 'Base Station', val: 'Electronic City, BLR', color: '#00e5ff' }
+               ].map((card, i) => (
+                <motion.div 
+                  key={i}
+                  whileHover={{ x: 10 }}
+                  className="flex items-center gap-5 bg-white/[0.03] p-5 rounded-2xl border border-white/5 hover:border-zinc-500 transition-all cursor-crosshair"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-zinc-900 flex items-center justify-center text-lg" style={{ color: card.color }}>
+                    {card.icon}
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-bold">{card.label}</p>
+                    <p className="text-white text-sm font-bold">{card.val}</p>
+                  </div>
+                </motion.div>
+               ))}
             </div>
           </div>
 
-          {/* RIGHT SIDE: SECURE TERMINAL (7 Columns) */}
+          {/* --- RIGHT: THE SECURE INPUT HUB --- */}
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="lg:col-span-7 bg-[#050505] p-1 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            className="lg:col-span-7 relative group"
           >
-            {/* Top Bar Decoration */}
-            <div className="flex items-center justify-between px-8 py-4 bg-zinc-950/50 border-b border-white/5">
-              <div className="flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-red-500/50" />
-                <div className="w-2 h-2 rounded-full bg-amber-500/50" />
-                <div className="w-2 h-2 rounded-full bg-emerald-500/50" />
-              </div>
-              <span className="text-[9px] font-mono text-zinc-600 tracking-widest uppercase">Encrypted_Packet_v4</span>
-            </div>
+            {/* Cyber Frame Decor */}
+            <div className="absolute -top-4 -right-4 w-24 h-24 border-t-2 border-r-2 border-[#ccff00]/20 rounded-tr-3xl pointer-events-none group-hover:border-[#ccff00]/50 transition-all duration-500" />
+            <div className="absolute -bottom-4 -left-4 w-24 h-24 border-b-2 border-l-2 border-[#ccff00]/20 rounded-bl-3xl pointer-events-none group-hover:border-[#ccff00]/50 transition-all duration-500" />
 
-            <div className="p-8 md:p-12">
-              <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[9px] font-mono text-zinc-500 ml-2 uppercase">Full_Identity</label>
+            <div className="bg-[#080808]/90 backdrop-blur-3xl p-6 sm:p-12 rounded-[2rem] sm:rounded-[3rem] border border-white/10 shadow-3xl overflow-hidden relative">
+              
+              <form className="space-y-8 relative z-10" onSubmit={(e) => e.preventDefault()}>
+                
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Name Input */}
+                  <div className="relative">
+                    <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'name' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>01_Identity_Header</label>
                     <input 
+                      onFocus={() => setFocusedField('name')}
+                      onBlur={() => setFocusedField(null)}
                       type="text" 
-                      placeholder="e.g. John Doe" 
-                      className="w-full p-4 bg-black border border-white/5 rounded-xl outline-none focus:border-[#ccff00]/50 transition-all text-white placeholder:text-zinc-800"
+                      placeholder="ENTER NAME" 
+                      className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm placeholder:text-zinc-800"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[9px] font-mono text-zinc-500 ml-2 uppercase">Service_Protocol</label>
-                    <select className="w-full p-4 bg-black border border-white/5 rounded-xl outline-none focus:border-[#ccff00]/50 transition-all text-zinc-500 appearance-none">
-                      <option>AI_&_Automation</option>
-                      <option>Cloud_Forge</option>
-                      <option>Cyber_Defense</option>
-                      <option>Product_Engineering</option>
+
+                  {/* Project Type */}
+                  <div className="relative">
+                    <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'type' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>02_Sector_Selection</label>
+                    <select 
+                      onFocus={() => setFocusedField('type')}
+                      onBlur={() => setFocusedField(null)}
+                      className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm appearance-none"
+                    >
+                      <option className="bg-[#080808]">AI_AUTONOMY</option>
+                      <option className="bg-[#080808]">CYBER_HARDENING</option>
+                      <option className="bg-[#080808]">NEURAL_ARCH</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[9px] font-mono text-zinc-500 ml-2 uppercase">Return_Frequency (Email)</label>
+                {/* Email Input */}
+                <div className="relative">
+                  <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'email' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>03_Communication_Node</label>
                   <input 
+                    onFocus={() => setFocusedField('email')}
+                    onBlur={() => setFocusedField(null)}
                     type="email" 
-                    placeholder="user@network.com" 
-                    className="w-full p-4 bg-black border border-white/5 rounded-xl outline-none focus:border-[#ccff00]/50 transition-all text-white placeholder:text-zinc-800"
+                    placeholder="ENTER EMAIL ADDRESS" 
+                    className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm placeholder:text-zinc-800"
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[9px] font-mono text-zinc-500 ml-2 uppercase">Mission_Parameters</label>
+                {/* Message Input */}
+                <div className="relative">
+                  <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'msg' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>04_Requirement_Manifesto</label>
                   <textarea 
-                    placeholder="Briefly describe your technical objectives..." 
-                    className="w-full p-4 bg-black border border-white/5 rounded-xl h-32 outline-none focus:border-[#ccff00]/50 transition-all text-white placeholder:text-zinc-800 resize-none"
+                    onFocus={() => setFocusedField('msg')}
+                    onBlur={() => setFocusedField(null)}
+                    placeholder="DEFINE OBJECTIVES..." 
+                    className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm placeholder:text-zinc-800 h-32 resize-none"
                   />
                 </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 py-4">
-                   <div className="flex items-center gap-2 text-zinc-600">
-                      <FaShieldAlt className="text-[10px]" /> <span className="text-[8px] font-mono uppercase">E2E_Encrypted</span>
+
+                {/* Submit Sequence */}
+                <div className="pt-6">
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full group relative py-6 bg-[#ccff00] text-black font-black uppercase tracking-[0.5em] text-[10px] sm:text-xs rounded-xl overflow-hidden"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-4">
+                      INITIATE_UPLINK <FaPaperPlane className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500" />
+                    </span>
+                    <div className="absolute inset-0 bg-white translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-500" />
+                  </motion.button>
+                </div>
+
+                {/* Secure Tags */}
+                <div className="flex flex-wrap justify-between gap-4 pt-6 opacity-30 group-hover:opacity-100 transition-opacity">
+                   <div className="flex items-center gap-2 text-[8px] font-mono uppercase font-black tracking-widest">
+                     <FaShieldAlt className="text-[#ccff00]" /> E2E_HARDENED
                    </div>
-                   <div className="flex items-center gap-2 text-zinc-600">
-                      <FaWifi className="text-[10px]" /> <span className="text-[8px] font-mono uppercase">Priority_Sync</span>
+                   <div className="flex items-center gap-2 text-[8px] font-mono uppercase font-black tracking-widest">
+                     <FaLock className="text-[#ccff00]" /> AES_ENCRYPTED
                    </div>
-                   <div className="flex items-center gap-2 text-zinc-600">
-                      <FaLock className="text-[10px]" /> <span className="text-[8px] font-mono uppercase">GDPR_Compliant</span>
+                   <div className="flex items-center gap-2 text-[8px] font-mono uppercase font-black tracking-widest">
+                     <FaGhost className="text-[#ccff00]" /> NO_LOGS_KEPT
                    </div>
                 </div>
 
-                <motion.button 
-                  whileHover={{ scale: 1.01, boxShadow: "0 0 40px rgba(204, 255, 0, 0.2)" }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full relative overflow-hidden group bg-[#ccff00] text-black py-5 rounded-xl font-black text-xs uppercase tracking-[0.3em] transition-all"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-3">
-                    Transmit Mission <FaPaperPlane className="text-xs group-hover:translate-x-2 transition-transform" />
-                  </span>
-                  <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                </motion.button>
               </form>
+
+              {/* Decorative Scanline */}
+              <motion.div 
+                animate={{ top: ["0%", "100%"] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="absolute left-0 right-0 h-[1px] bg-[#ccff00]/10 z-0 pointer-events-none"
+              />
             </div>
           </motion.div>
         </div>
       </div>
     </section>
   );
-}
+} 

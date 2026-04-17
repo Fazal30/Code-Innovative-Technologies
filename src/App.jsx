@@ -23,6 +23,7 @@ import Web3 from './pages/services/Web3';
 import DataIntelligence from './pages/services/DataIntelligence'; 
 import WebD from './pages/services/WebD';
 import Software from './pages/services/Software';
+import TechHub from './pages/TechSectors';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -162,6 +163,7 @@ function RoutesWithAnimation() {
         <Route path="/services/web3" element={<Web3 />} />
         <Route path="/services/software" element={<Software />} />
         <Route path="/services/data-intelligence" element={<DataIntelligence />} />
+        <Route path="/tech" element={<TechHub />} />
       </Routes>
 
       {/* Ambient Visuals */}
