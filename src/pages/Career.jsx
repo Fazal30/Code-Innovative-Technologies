@@ -73,7 +73,7 @@ export default function Career() {
           >
             // Build_With_Us
           </motion.span>
-          <h1 className="text-[10vw] font-black tracking-tighter leading-[0.85] mb-8 uppercase">
+          <h1 className="text-[6vw] font-black tracking-tighter leading-[0.85] mb-8 uppercase">
             WE ONLY HIRE <br /> 
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-emerald-400 to-white">WARRIORS.</span>
           </h1>
