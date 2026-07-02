@@ -82,7 +82,6 @@ export default function Career() {
 Innovative Technologies isn't a workplace. It's a high-stakes engineering forge for the top 1% of digital talent. We build systems that define industries.
           </p>
           
-          {/* Real-time Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-80 max-w-4xl mx-auto border-t border-white/5 pt-12">
             {[
               { label: "Remote Native", val: "100%", icon: <FaGlobe /> },
