@@ -47,11 +47,81 @@ const hiringSteps = [
 export default function Career() {
   const [activeJob, setActiveJob] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // Controlled form state
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    location: '',
+    github: '',
+    linkedin: '',
+    portfolio: '',
+    experience: 'Select Experience',
+    salary: '',
+    noticePeriod: '',
+    stack: '',
+    philosophy: '',
+    fileName: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData(prev => ({ ...prev, fileName: e.target.files[0].name }));
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // 1. Structure text dynamically for WhatsApp
+    const whatsappMessage = `*⚡ NEW TALENT PACKET ACQUIRED ⚡*
+----------------------------------------
+*01. BIOMETRICS*
+• *Name:* ${formData.fullName}
+• *Email:* ${formData.email}
+• *Phone:* ${formData.phone || 'N/A'}
+• *Location:* ${formData.location || 'N/A'}
+
+*02. DIGITAL FOOTPRINT*
+• *GitHub:* ${formData.github || 'N/A'}
+• *LinkedIn:* ${formData.linkedin || 'N/A'}
+• *Portfolio:* ${formData.portfolio || 'N/A'}
+
+*03. LOGISTICS & ARSENAL*
+• *Experience:* ${formData.experience}
+• *Expected Salary:* $${formData.salary || 'N/A'}
+• *Notice Period:* ${formData.noticePeriod || 'N/A'}
+• *Tech Stack:* ${formData.stack}
+
+*04. ARCHITECTURAL PHILOSOPHY*
+_"${formData.philosophy || 'No philosophy provided.'}"_
+
+*05. ATTACHMENTS*
+• *Resume Attached:* ${formData.fileName ? `Yes (${formData.fileName})` : 'No file loaded.'}
+----------------------------------------
+_// Form transmitted securely from Recruitment_Terminal_`;
+
+    // 2. Format URL parameters
+    const phoneNumber = "919620996689"; // India country code prefix injected safely
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+
+    // 3. UI State updates
     setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 5000);
+
+    // 4. Trigger seamless redirection in an external thread
+    setTimeout(() => {
+      window.open(whatsappUrl, '_blank');
+    }, 800);
+
+    // Reset overlay timer
+    setTimeout(() => setIsSubmitted(false), 6000);
   };
 
   return (
@@ -78,8 +148,7 @@ export default function Career() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-emerald-400 to-white">WARRIORS.</span>
           </h1>
           <p className="max-w-2xl mx-auto text-zinc-500 text-lg md:text-xl font-light mb-12">
-            CODE
-Innovative Technologies isn't a workplace. It's a high-stakes engineering forge for the top 1% of digital talent. We build systems that define industries.
+            CODE Innovative Technologies isn't a workplace. It's a high-stakes engineering forge for the top 1% of digital talent. We build systems that define industries.
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-80 max-w-4xl mx-auto border-t border-white/5 pt-12">
@@ -130,6 +199,7 @@ Innovative Technologies isn't a workplace. It's a high-stakes engineering forge 
               }`}
             >
               <button 
+                type="button"
                 onClick={() => setActiveJob(activeJob === job.id ? null : job.id)}
                 className="w-full p-10 flex flex-col md:flex-row justify-between items-start md:items-center text-left"
               >
@@ -227,165 +297,163 @@ Innovative Technologies isn't a workplace. It's a high-stakes engineering forge 
       </section>
 
       {/* --- 6. EXPANDED APPLICATION FORM --- */}
-<section id="apply" className="max-w-6xl mx-auto px-6 py-40">
-  <motion.div 
-    initial={{ opacity: 0, y: 50 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="bg-zinc-900/40 p-8 md:p-24 rounded-[4rem] border border-white/10 relative overflow-hidden backdrop-blur-3xl"
-  >
-    {/* Decorative Form Accents */}
-    <div className="absolute top-0 right-0 w-64 h-64 bg-[#ccff00]/5 blur-[100px] pointer-events-none" />
-    <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 blur-[120px] pointer-events-none" />
-
-    <div className="relative z-10 mb-20">
-      <div className="flex items-center gap-4 mb-6">
-        <div className="h-px w-12 bg-[#ccff00]" />
-        <span className="text-[#ccff00] font-mono text-xs uppercase tracking-[0.3em]">Recruitment_Terminal_v2.0</span>
-      </div>
-      <h2 className="text-6xl md:text-8xl font-black tracking-tighter mb-4 uppercase text-white leading-[0.85]">
-        SUBMIT <br /> <span className="text-zinc-700 italic">CREDENTIALS</span>
-      </h2>
-      <p className="text-zinc-500 font-medium max-w-md">Complete the synchronization process. All fields encrypted via Secure Protocol.</p>
-    </div>
-
-    <form onSubmit={handleSubmit} className="relative z-10 space-y-20">
-      
-      {/* SECTION 01: PERSONAL BIOMETRICS */}
-      <div className="space-y-10">
-        <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
-          <span className="text-[#ccff00]">01</span> Personal_Biometrics
-        </h4>
-        <div className="grid md:grid-cols-2 gap-12">
-          <div className="group space-y-2">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Full Name</label>
-            <input required className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="Jane Doe" />
-          </div>
-          <div className="group space-y-2">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Secure Email</label>
-            <input required type="email" className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="jane@protocol.xyz" />
-          </div>
-          <div className="group space-y-2">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Phone Number</label>
-            <input type="tel" className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="+1 (555) 000-0000" />
-          </div>
-          <div className="group space-y-2">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Current Location</label>
-            <input className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="City, Country (or Remote)" />
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 02: DIGITAL FOOTPRINT */}
-      <div className="space-y-10">
-        <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
-          <span className="text-[#ccff00]">02</span> Digital_Footprint
-        </h4>
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="relative group">
-            <FaGithub className="absolute left-0 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-[#ccff00]" />
-            <input className="w-full bg-transparent border-b border-white/10 pl-8 py-4 outline-none focus:border-[#ccff00] transition-colors text-sm font-mono text-zinc-300" placeholder="github.com/handle" />
-          </div>
-          <div className="relative group">
-            <FaLinkedin className="absolute left-0 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-[#ccff00]" />
-            <input className="w-full bg-transparent border-b border-white/10 pl-8 py-4 outline-none focus:border-[#ccff00] transition-colors text-sm font-mono text-zinc-300" placeholder="linkedin.com/in/user" />
-          </div>
-          <div className="relative group">
-            <FaGlobe className="absolute left-0 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-[#ccff00]" />
-            <input className="w-full bg-transparent border-b border-white/10 pl-8 py-4 outline-none focus:border-[#ccff00] transition-colors text-sm font-mono text-zinc-300" placeholder="portfolio.xyz" />
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 03: LOGISTICS & EXPECTATIONS */}
-      <div className="space-y-10">
-        <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
-          <span className="text-[#ccff00]">03</span> Project_Logistics
-        </h4>
-        <div className="grid md:grid-cols-2 gap-12">
-          <div className="group space-y-4">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Experience Level</label>
-            <select className="w-full bg-zinc-950 border border-white/10 rounded-xl px-6 py-4 outline-none focus:border-[#ccff00] transition-colors text-white appearance-none cursor-pointer">
-              <option className="bg-black">Select Experience</option>
-              <option className="bg-black">Junior (1-3 Years)</option>
-              <option className="bg-black">Mid-Level (3-6 Years)</option>
-              <option className="bg-black">Senior (6-10 Years)</option>
-              <option className="bg-black">Principal / Architect (10+ Years)</option>
-            </select>
-          </div>
-          <div className="group space-y-2">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Salary Expectation (Annual USD)</label>
-            <input className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="e.g. 140,000" />
-          </div>
-          <div className="group space-y-2">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Notice Period</label>
-            <input className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="e.g. Immediate / 2 Weeks" />
-          </div>
-          <div className="group space-y-2">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Primary Arsenal (Stack)</label>
-            <input required className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="React, Rust, AWS, K8s..." />
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 04: INTELLECTUAL DUMP */}
-      <div className="space-y-10">
-        <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
-          <span className="text-[#ccff00]">04</span> Technical_Philosophy
-        </h4>
-        <div className="space-y-4">
-          <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 italic">Why CODE
-Innovative Technologies? Tell us about a system you built that didn't break under pressure.</label>
-          <textarea rows="5" className="w-full bg-black/50 border border-white/10 rounded-[2rem] p-8 outline-none focus:border-[#ccff00] transition-colors text-zinc-300 font-light resize-none" placeholder="Describe your architectural decisions..."></textarea>
-        </div>
-      </div>
-
-      {/* SECTION 05: DATA TRANSMISSION */}
-      <div className="space-y-10">
-        <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
-          <span className="text-[#ccff00]">05</span> Intelligence_Upload
-        </h4>
-        <div className="relative group">
-          <input type="file" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" />
-          <div className="py-24 border-2 border-dashed border-white/5 rounded-[3rem] flex flex-col items-center group-hover:bg-[#ccff00]/5 group-hover:border-[#ccff00]/30 transition-all relative overflow-hidden">
-            {/* Animated background lines in upload zone */}
-            <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
-               <div className="absolute top-0 left-0 w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_20px,rgba(204,255,0,0.1)_20px,rgba(204,255,0,0.1)_40px)]" />
-            </div>
-            
-            <motion.div 
-              animate={{ y: [0, -10, 0] }} 
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="z-10"
-            >
-              <FaCloudUploadAlt className="text-6xl text-zinc-800 group-hover:text-[#ccff00] mb-6 transition-colors" />
-            </motion.div>
-            <p className="z-10 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 group-hover:text-zinc-200">
-              Drop Resume / CV here (PDF preferred)
-            </p>
-            <p className="z-10 text-[9px] text-zinc-700 mt-2 uppercase tracking-tighter">Max file size: 10MB</p>
-          </div>
-        </div>
-      </div>
-
-      {/* SUBMISSION ACTION */}
-      <div className="pt-10">
-        <motion.button 
-          whileHover={{ scale: 1.02, backgroundColor: "#fff" }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full py-10 bg-[#ccff00] text-black rounded-[2rem] font-black text-sm uppercase tracking-[1em] shadow-[0_30px_60px_rgba(204,255,0,0.15)] group relative overflow-hidden"
+      <section id="apply" className="max-w-6xl mx-auto px-6 py-40">
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-zinc-900/40 p-8 md:p-24 rounded-[4rem] border border-white/10 relative overflow-hidden backdrop-blur-3xl"
         >
-          <span className="relative z-10">Initiate Protocol</span>
-          <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-        </motion.button>
-        <p className="text-center mt-8 text-[9px] text-zinc-600 font-mono uppercase tracking-widest">
-          By clicking, you agree to our recruitment data processing terms.
-        </p>
-      </div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#ccff00]/5 blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500/5 blur-[120px] pointer-events-none" />
 
-    </form>
-  </motion.div>
-</section>
+          <div className="relative z-10 mb-20">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="h-px w-12 bg-[#ccff00]" />
+              <span className="text-[#ccff00] font-mono text-xs uppercase tracking-[0.3em]">Recruitment_Terminal_v2.0</span>
+            </div>
+            <h2 className="text-6xl md:text-8xl font-black tracking-tighter mb-4 uppercase text-white leading-[0.85]">
+              SUBMIT <br /> <span className="text-zinc-700 italic">CREDENTIALS</span>
+            </h2>
+            <p className="text-zinc-500 font-medium max-w-md">Complete the synchronization process. All fields formatted into encrypted WhatsApp stream packets.</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="relative z-10 space-y-20">
+            
+            {/* SECTION 01: PERSONAL BIOMETRICS */}
+            <div className="space-y-10">
+              <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
+                <span className="text-[#ccff00]">01</span> Personal_Biometrics
+              </h4>
+              <div className="grid md:grid-cols-2 gap-12">
+                <div className="group space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Full Name</label>
+                  <input required name="fullName" value={formData.fullName} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="Jane Doe" />
+                </div>
+                <div className="group space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Secure Email</label>
+                  <input required type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="jane@protocol.xyz" />
+                </div>
+                <div className="group space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Phone Number</label>
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="+91 96209 96689" />
+                </div>
+                <div className="group space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 group-focus-within:text-[#ccff00] transition-colors">Current Location</label>
+                  <input name="location" value={formData.location} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="City, Country (or Remote)" />
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 02: DIGITAL FOOTPRINT */}
+            <div className="space-y-10">
+              <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
+                <span className="text-[#ccff00]">02</span> Digital_Footprint
+              </h4>
+              <div className="grid md:grid-cols-3 gap-8">
+                <div className="relative group">
+                  <FaGithub className="absolute left-0 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-[#ccff00]" />
+                  <input name="github" value={formData.github} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 pl-8 py-4 outline-none focus:border-[#ccff00] transition-colors text-sm font-mono text-zinc-300" placeholder="github.com/handle" />
+                </div>
+                <div className="relative group">
+                  <FaLinkedin className="absolute left-0 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-[#ccff00]" />
+                  <input name="linkedin" value={formData.linkedin} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 pl-8 py-4 outline-none focus:border-[#ccff00] transition-colors text-sm font-mono text-zinc-300" placeholder="linkedin.com/in/user" />
+                </div>
+                <div className="relative group">
+                  <FaGlobe className="absolute left-0 top-1/2 -translate-y-1/2 text-zinc-700 group-focus-within:text-[#ccff00]" />
+                  <input name="portfolio" value={formData.portfolio} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 pl-8 py-4 outline-none focus:border-[#ccff00] transition-colors text-sm font-mono text-zinc-300" placeholder="portfolio.xyz" />
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 03: LOGISTICS & EXPECTATIONS */}
+            <div className="space-y-10">
+              <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
+                <span className="text-[#ccff00]">03</span> Project_Logistics
+              </h4>
+              <div className="grid md:grid-cols-2 gap-12">
+                <div className="group space-y-4">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Experience Level</label>
+                  <select name="experience" value={formData.experience} onChange={handleInputChange} className="w-full bg-zinc-950 border border-white/10 rounded-xl px-6 py-4 outline-none focus:border-[#ccff00] transition-colors text-white appearance-none cursor-pointer">
+                    <option className="bg-black">Select Experience</option>
+                    <option className="bg-black">Junior (1-3 Years)</option>
+                    <option className="bg-black">Mid-Level (3-6 Years)</option>
+                    <option className="bg-black">Senior (6-10 Years)</option>
+                    <option className="bg-black">Principal / Architect (10+ Years)</option>
+                  </select>
+                </div>
+                <div className="group space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Salary Expectation (Annual USD)</label>
+                  <input name="salary" value={formData.salary} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="e.g. 140,000" />
+                </div>
+                <div className="group space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Notice Period</label>
+                  <input name="noticePeriod" value={formData.noticePeriod} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="e.g. Immediate / 2 Weeks" />
+                </div>
+                <div className="group space-y-2">
+                  <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2">Primary Arsenal (Stack)</label>
+                  <input required name="stack" value={formData.stack} onChange={handleInputChange} className="w-full bg-transparent border-b border-white/10 px-0 py-4 outline-none focus:border-[#ccff00] transition-colors text-xl font-light text-white" placeholder="React, Rust, AWS, K8s..." />
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 04: INTELLECTUAL DUMP */}
+            <div className="space-y-10">
+              <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
+                <span className="text-[#ccff00]">04</span> Technical_Philosophy
+              </h4>
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-2 italic">Why CODE Innovative Technologies? Tell us about a system you built that didn't break under pressure.</label>
+                <textarea rows="5" name="philosophy" value={formData.philosophy} onChange={handleInputChange} className="w-full bg-black/50 border border-white/10 rounded-[2rem] p-8 outline-none focus:border-[#ccff00] transition-colors text-zinc-300 font-light resize-none" placeholder="Describe your architectural decisions..."></textarea>
+              </div>
+            </div>
+
+            {/* SECTION 05: DATA TRANSMISSION */}
+            <div className="space-y-10">
+              <h4 className="text-[10px] font-black text-zinc-600 uppercase tracking-[0.5em] flex items-center gap-4">
+                <span className="text-[#ccff00]">05</span> Intelligence_Upload
+              </h4>
+              <div className="relative group">
+                <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" />
+                <div className="py-24 border-2 border-dashed border-white/5 rounded-[3rem] flex flex-col items-center group-hover:bg-[#ccff00]/5 group-hover:border-[#ccff00]/30 transition-all relative overflow-hidden">
+                  <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+                     <div className="absolute top-0 left-0 w-full h-full bg-[repeating-linear-gradient(45deg,transparent,transparent_20px,rgba(204,255,0,0.1)_20px,rgba(204,255,0,0.1)_40px)]" />
+                  </div>
+                  
+                  <motion.div 
+                    animate={{ y: [0, -10, 0] }} 
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="z-10"
+                  >
+                    <FaCloudUploadAlt className={`text-6xl mb-6 transition-colors ${formData.fileName ? 'text-[#ccff00]' : 'text-zinc-800 group-hover:text-[#ccff00]'}`} />
+                  </motion.div>
+                  <p className="z-10 text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 group-hover:text-zinc-200 text-center px-4">
+                    {formData.fileName ? `LOADED: ${formData.fileName}` : 'Drop Resume / CV here (PDF preferred)'}
+                  </p>
+                  <p className="z-10 text-[9px] text-zinc-700 mt-2 uppercase tracking-tighter">Max file size: 10MB</p>
+                </div>
+              </div>
+            </div>
+
+            {/* SUBMISSION ACTION */}
+            <div className="pt-10">
+              <motion.button 
+                type="submit"
+                whileHover={{ scale: 1.02, backgroundColor: "#fff" }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full py-10 bg-[#ccff00] text-black rounded-[2rem] font-black text-sm uppercase tracking-[1em] shadow-[0_30px_60px_rgba(204,255,0,0.15)] group relative overflow-hidden"
+              >
+                <span className="relative z-10">Initiate Protocol</span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              </motion.button>
+              <p className="text-center mt-8 text-[9px] text-zinc-600 font-mono uppercase tracking-widest">
+                By clicking, you agree to our recruitment data processing terms.
+              </p>
+            </div>
+
+          </form>
+        </motion.div>
+      </section>
 
       {/* --- SUCCESS OVERLAY --- */}
       <AnimatePresence>
@@ -403,9 +471,9 @@ Innovative Technologies? Tell us about a system you built that didn't break unde
               </div>
               <h3 className="text-5xl font-black tracking-tighter uppercase mb-6 italic">Protocol Initiated</h3>
               <p className="text-zinc-500 font-mono text-xs uppercase tracking-[0.2em] max-w-sm mx-auto mb-10 leading-loose">
-                Data packet received. Our algorithmic triage has begun. Expect contact if you meet the threshold.
+                Data packet received. WhatsApp API link generated. Complete transaction transmission inside WhatsApp.
               </p>
-              <button onClick={() => setIsSubmitted(false)} className="px-10 py-4 border border-white/10 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+              <button type="button" onClick={() => setIsSubmitted(false)} className="px-10 py-4 border border-white/10 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-white hover:text-black transition-all">
                 Terminate Window
               </button>
             </motion.div>

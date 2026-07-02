@@ -3,14 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   FaArrowUp, FaShieldAlt, FaLongArrowAltRight, 
-  FaPhoneAlt, FaInstagram, FaWhatsapp, FaGithub, FaLinkedin, FaEnvelope
+  FaPhoneAlt, FaInstagram, FaWhatsapp, FaGithub, FaLinkedin, FaEnvelope,
+  FaMemory, FaServer, FaChartBar, FaGlobe
 } from 'react-icons/fa';
 import { MdSettingsInputComponent, MdGraphicEq, MdCellTower } from 'react-icons/md';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [time, setTime] = useState(new Date().toLocaleTimeString());
-  const [isHovered, setIsHovered] = useState(null);
+  const [activeSegment, setActiveSegment] = useState('LOG_A');
 
   useEffect(() => {
     const timer = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
@@ -41,70 +42,70 @@ export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="relative bg-[#020202] text-white pt-20 lg:pt-32 overflow-hidden border-t border-[#ccff00]/10">
+    <footer className="relative bg-[#020202] text-white pt-24 lg:pt-36 pb-6 overflow-hidden border-t border-[#ccff00]/10">
       
-      {/* --- CYBERNETIC BACKGROUND LAYER --- */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')]" />
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[#ccff00]/10 to-transparent" />
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:32px_32px]" />
       </div>
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_100%,#ccff0005_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-10 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
         
-        {/* UPPER SECTION: BRAND & NEWSLETTER */}
-        <div className="grid lg:grid-cols-12 gap-12 pb-20 border-b border-white/5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 pb-16 border-b border-white/5">
           
           <div className="lg:col-span-5 space-y-8">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-4"
-            >
-              <div className="w-14 h-14 bg-[#ccff00] rounded-2xl flex items-center justify-center text-black shadow-[0_0_30px_rgba(204,255,0,0.3)]">
-                <MdSettingsInputComponent size={32} className="animate-spin-slow" />
+            <div className="flex items-center gap-4">
+              <div className="relative w-14 h-14 bg-zinc-950 rounded-2xl flex items-center justify-center border border-[#ccff00]/20 shadow-[0_0_25px_rgba(204,255,0,0.05)] overflow-hidden group">
+                <MdSettingsInputComponent className="text-[#ccff00] text-2xl animate-[spin_10s_linear_infinite]" />
+                <div className="absolute inset-0 bg-[#ccff00]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <div>
-                <h3 className="text-3xl font-black tracking-tighter uppercase italic italic">Code<span className="text-[#ccff00]">_INNOVATIVE</span></h3>
-                <p className="text-[9px] font-mono tracking-[0.4em] text-zinc-500 uppercase">Industrial Intelligence Unit</p>
+                <h3 className="text-2xl font-black tracking-tighter uppercase italic">Code<span className="text-[#ccff00]">_INNOVATIVE</span></h3>
+                <p className="text-[8px] font-mono tracking-[0.4em] text-zinc-500 uppercase mt-1">Industrial Intelligence Unit</p>
               </div>
-            </motion.div>
+            </div>
 
-            <p className="text-zinc-500 text-sm sm:text-base leading-relaxed max-w-md font-medium">
-              We engineer the friction-less future. Our protocols power high-frequency infrastructures across 4 continents.
+            <p className="text-zinc-400 text-sm leading-relaxed max-w-md font-light text-justify">
+              We engineer the friction-less future. Our custom protocols and hardened kernel modules power high-frequency autonomous infrastructure stacks across 4 continents simultaneously.
             </p>
 
-            {/* RESPONSIVE STATUS HUD */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-xl backdrop-blur-md">
-                <div className="flex items-center gap-2 text-[#ccff00] mb-2">
-                  <MdCellTower className="animate-pulse" />
-                  <span className="text-[8px] font-black tracking-widest uppercase">Uplink_Status</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="p-4 bg-zinc-950 border border-white/5 rounded-xl flex items-center gap-4">
+                <div className="p-2.5 bg-zinc-900 rounded-lg text-[#ccff00]">
+                  <FaServer size={14} />
                 </div>
-                <div className="text-xl font-mono font-bold tracking-tighter text-white">ACTIVE.42</div>
+                <div>
+                  <span className="block text-[8px] font-mono tracking-widest text-zinc-500 uppercase">Uplink_Node</span>
+                  <span className="text-sm font-mono font-bold tracking-tight text-white">ACTIVE.42_STABLE</span>
+                </div>
               </div>
-              <div className="p-4 bg-zinc-900/50 border border-white/5 rounded-xl backdrop-blur-md">
-                <div className="flex items-center gap-2 text-cyan-400 mb-2">
-                  <FaShieldAlt />
-                  <span className="text-[8px] font-black tracking-widest uppercase">Security_Lv</span>
+
+              <div className="p-4 bg-zinc-950 border border-white/5 rounded-xl flex items-center gap-4">
+                <div className="p-2.5 bg-zinc-900 rounded-lg text-cyan-400">
+                  <FaShieldAlt size={14} />
                 </div>
-                <div className="text-xl font-mono font-bold tracking-tighter text-white">MIL_SPEC</div>
+                <div>
+                  <span className="block text-[8px] font-mono tracking-widest text-zinc-500 uppercase">Security_Chain</span>
+                  <span className="text-sm font-mono font-bold tracking-tight text-white">MIL_SPEC_EAL6</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* DYNAMIC NAVIGATION LINKS */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-10">
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12 sm:gap-8">
             {footerLinks.map((group, idx) => (
               <div key={idx} className="space-y-6">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#ccff00]">{group.title}</h4>
-                <ul className="space-y-3">
+                <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#ccff00] flex items-center gap-2">
+                  <span className="w-1 h-1 bg-[#ccff00] rounded-full" /> {group.title}
+                </h4>
+                <ul className="space-y-4">
                   {group.items.map((link) => (
                     <li key={link.name}>
                       <Link 
                         to={link.path}
-                        className="text-zinc-500 text-xs sm:text-sm hover:text-white transition-all flex items-center gap-2 group"
+                        className="text-zinc-400 text-xs font-mono uppercase hover:text-white transition-colors flex items-center gap-2 group"
                       >
-                        <span className="w-0 group-hover:w-3 h-px bg-[#ccff00] transition-all" />
+                        <span className="w-0 group-hover:w-2 h-[1px] bg-[#ccff00] transition-all duration-300" />
                         {link.name}
                       </Link>
                     </li>
@@ -113,137 +114,99 @@ export default function Footer() {
               </div>
             ))}
 
-            {/* NEWSLETTER NODE (Responsive Transformation) */}
-            <div className="col-span-2 sm:col-span-1 space-y-6">
-               <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500">Subscribe_Feed</h4>
-               <div className="relative group">
-                 <input 
-                   type="text" 
-                   placeholder="USER@DOMAIN"
-                   className="w-full bg-zinc-900 border border-white/10 p-3 rounded-lg text-[10px] font-mono focus:border-[#ccff00] transition-all outline-none"
-                 />
-                 <button className="absolute right-2 top-1/2 -translate-y-1/2 text-[#ccff00]">
-                   <FaLongArrowAltRight />
-                 </button>
-               </div>
+            <div className="space-y-6">
+              <h4 className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-500 flex items-center gap-2">
+                <span className="w-1 h-1 bg-zinc-500 rounded-full" /> Subscribe_Feed
+              </h4>
+              <div className="space-y-3">
+                <div className="relative">
+                  <input 
+                    type="email" 
+                    placeholder="USER@DOMAIN.SYS"
+                    className="w-full bg-zinc-950 border border-white/10 p-3.5 pr-12 rounded-xl text-[10px] font-mono tracking-widest text-white focus:border-[#ccff00]/40 transition-all outline-none"
+                  />
+                  <button className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 bg-zinc-900 rounded-lg flex items-center justify-center text-[#ccff00] hover:bg-[#ccff00] hover:text-black transition-all border border-white/5">
+                    <FaLongArrowAltRight size={10} />
+                  </button>
+                </div>
+                <p className="text-[8px] font-mono text-zinc-600 uppercase leading-normal">
+                  // Submit credentials to bind into real-time telemetry updates.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* MIDDLE SECTION: CONTACT & SOCIALS */}
-        <div className="py-12 flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="flex flex-col md:flex-row items-center gap-10">
-            <div className="text-center md:text-left">
-              <p className="text-[8px] font-mono text-zinc-600 uppercase tracking-widest mb-1">HQ_BASE_ Bengaluru, IN</p>
-              <p className="text-lg font-black tracking-tight">+91 96209 96689</p>
+        <div className="py-12 border-b border-white/5 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-6 sm:gap-12">
+            <div className="p-5 bg-zinc-950 rounded-xl border border-white/5 flex-1 sm:flex-none">
+              <p className="text-[8px] font-mono text-zinc-500 uppercase tracking-widest mb-1.5">// HQ_BASE_BENGALURU_IN</p>
+              <a href="tel:+919620996689" className="text-base font-bold tracking-tight font-mono hover:text-[#ccff00] transition-colors">+91 96209 96689</a>
             </div>
-            <div className="hidden md:block w-px h-10 bg-white/10" />
-            <div className="text-center md:text-left">
-              <p className="text-[8px] font-mono text-zinc-600 uppercase tracking-widest mb-1">SECURE_MAIL</p>
-              <p className="text-lg font-black tracking-tight">Info@codeinnovativetechnologies.com</p>
+            <div className="p-5 bg-zinc-950 rounded-xl border border-white/5 flex-1 sm:flex-none">
+              <p className="text-[8px] font-mono text-zinc-500 uppercase tracking-widest mb-1.5">// SECURE_ROUTING_MAIL</p>
+              <a href="mailto:Info@codeinnovativetechnologies.com" className="text-base font-bold tracking-tight font-mono hover:text-[#ccff00] transition-colors truncate block max-w-xs sm:max-w-none">Info@codeinnovativetechnologies.com</a>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4">
-  {[
-    { 
-      icon: FaInstagram, 
-      link: "https://www.instagram.com/code_innovativetechnologies?igsh=c2h2cmVreHBnY3Y5&utm_source=qr",
-      label: "Instagram" 
-    },
-    { 
-      icon: FaWhatsapp, 
-      link: "https://wa.me/919620996689",
-      label: "WhatsApp" 
-    },
-    { 
-      icon: FaLinkedin, 
-      link: "#", 
-      label: "LinkedIn" 
-    },
-    { 
-      icon: FaGithub, 
-      link: "https://github.com/Fazal30", 
-      label: "GitHub" 
-    },
-    { 
-      icon: FaEnvelope, 
-      link: "mailto:info@codeinnovativetechnologies.com",
-      label: "Email" 
-    },
-    { 
-      icon: FaPhoneAlt, 
-      link: "tel:+919620996689",
-      label: "Call" 
-    }
-  ].map((item, i) => (
-    <motion.a 
-      key={i}
-      whileHover={{ 
-        y: -5, 
-        borderColor: '#ccff00', 
-        color: '#ccff00',
-        boxShadow: "0 0 15px rgba(204, 255, 0, 0.3)"
-      }}
-      whileTap={{ scale: 0.9 }}
-      href={item.link}
-      target={item.link.startsWith('http') ? "_blank" : "_self"}
-      rel="noopener noreferrer"
-      title={item.label}
-      className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-zinc-500 transition-all bg-zinc-900/50 backdrop-blur-sm"
-    >
-      <item.icon size={18} />
-    </motion.a>
-  ))}
-</div>
+          <div className="lg:col-span-4 flex flex-wrap gap-3 lg:justify-end">
+            {[
+              { icon: FaInstagram, link: "https://www.instagram.com/code_innovativetechnologies?igsh=c2h2cmVreHBnY3Y5&utm_source=qr", label: "Instagram", color: "hover:text-[#E4405F] hover:border-[#E4405F]/30" },
+              { icon: FaWhatsapp, link: "https://wa.me/919620996689", label: "WhatsApp", color: "hover:text-[#25D366] hover:border-[#25D366]/30" },
+              { icon: FaLinkedin, link: "#", label: "LinkedIn", color: "hover:text-[#0077B5] hover:border-[#0077B5]/30" },
+              { icon: FaGithub, link: "https://github.com/Fazal30", label: "GitHub", color: "hover:text-white hover:border-white/30" },
+              { icon: FaEnvelope, link: "mailto:info@codeinnovativetechnologies.com", label: "Email", color: "hover:text-[#c93939] hover:border-[#c93939]/30" },
+              { icon: FaPhoneAlt, link: "tel:+919620996689", label: "Call", color: "hover:text-[#ccff00] hover:border-[#ccff00]/30" }
+            ].map((item, i) => (
+              <motion.a 
+                key={i}
+                whileHover={{ y: -4, backgroundColor: "rgba(0,0,0,0.8)" }}
+                whileTap={{ scale: 0.95 }}
+                href={item.link}
+                target={item.link.startsWith('http') ? "_blank" : "_self"}
+                rel="noopener noreferrer"
+                title={item.label}
+                className={`w-11 h-11 rounded-xl border border-white/5 flex items-center justify-center text-zinc-500 transition-all bg-zinc-950 shadow-lg ${item.color}`}
+              >
+                <item.icon size={15} />
+              </motion.a>
+            ))}
+          </div>
         </div>
 
-        {/* LOWER BAR: GLOBAL TELEMETRY */}
-        <div className="border-t border-white/5 py-8 flex flex-col sm:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-4 text-[10px] font-mono text-zinc-600">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#ccff00] animate-pulse" />
+        <div className="pt-10 flex flex-col md:flex-row justify-between items-stretch md:items-center gap-8">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-[9px] font-mono text-zinc-500">
+            <span className="flex items-center gap-2 bg-zinc-950 px-3 py-1.5 rounded-md border border-white/5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ccff00] animate-pulse" />
               SYSTEMS_NOMINAL
             </span>
-            <span className="hidden sm:block">|</span>
-            <span className="uppercase">Latency: 12ms</span>
-            <span className="hidden sm:block">|</span>
-            <span className="text-white">SYS_TIME: {time}</span>
+            <span>LATENCY: 12MS</span>
+            <span className="text-zinc-400">SYS_TIME: {time}</span>
           </div>
 
-          <div className="flex items-center gap-8">
-            <p className="text-[9px] font-bold text-zinc-500 uppercase tracking-[0.2em]">
+          <div className="flex items-center justify-between md:justify-end gap-8">
+            <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">
               © {currentYear} Code Innovative Technologies. <span className="text-[#ccff00]">v4.0.2</span>
             </p>
             <motion.button 
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.05, borderColor: "rgba(204,255,0,0.3)" }}
+              whileTap={{ scale: 0.95 }}
               onClick={scrollToTop}
-              className="p-3 bg-zinc-900 rounded-lg border border-white/10 text-[#ccff00] hover:bg-[#ccff00] hover:text-black transition-all"
+              className="w-10 h-10 bg-zinc-950 rounded-xl border border-white/5 text-[#ccff00] flex items-center justify-center shadow-lg transition-colors"
             >
-              <FaArrowUp size={14} />
+              <FaArrowUp size={12} />
             </motion.button>
           </div>
         </div>
       </div>
 
-      {/* FOOTER SCAN-BEAM ANIMATION */}
-      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-zinc-900">
+      <div className="absolute bottom-0 left-0 w-full h-[1px] bg-zinc-950 overflow-hidden">
         <motion.div 
-          animate={{ x: ['-100%', '200%'] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          className="w-64 h-full bg-[#ccff00] shadow-[0_0_15px_#ccff00]"
+          animate={{ x: ['-100%', '300%'] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+          className="w-48 h-full bg-gradient-to-r from-transparent via-[#ccff00]/40 to-transparent"
         />
       </div>
-
-      <style jsx>{`
-        .animate-spin-slow {
-          animation: spin 8s linear infinite;
-        }
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </footer>
   );
 }
