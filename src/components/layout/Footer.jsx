@@ -151,10 +151,10 @@ export default function Footer() {
 
           <div className="lg:col-span-4 flex flex-wrap gap-3 lg:justify-end">
             {[
-              { icon: FaInstagram, link: "https://www.instagram.com/code_innovativetechnologies?igsh=c2h2cmVreHBnY3Y5&utm_source=qr", label: "Instagram", color: "hover:text-[#E4405F] hover:border-[#E4405F]/30" },
+              { icon: FaInstagram, link: "https://www.instagram.com/code_innovativetechnologies", label: "Instagram", color: "hover:text-[#E4405F] hover:border-[#E4405F]/30" },
               { icon: FaWhatsapp, link: "https://wa.me/919620996689", label: "WhatsApp", color: "hover:text-[#25D366] hover:border-[#25D366]/30" },
-              { icon: FaLinkedin, link: "#", label: "LinkedIn", color: "hover:text-[#0077B5] hover:border-[#0077B5]/30" },
-              { icon: FaGithub, link: "https://github.com/Fazal30", label: "GitHub", color: "hover:text-white hover:border-white/30" },
+              { icon: FaLinkedin, link: "https://www.linkedin.com/company/code-innovative-technologies", label: "LinkedIn", color: "hover:text-[#0077B5] hover:border-[#0077B5]/30" },
+              { icon: FaGithub, link: "https://github.com/AppNest-Dev", label: "GitHub", color: "hover:text-white hover:border-white/30" },
               { icon: FaEnvelope, link: "mailto:info@codeinnovativetechnologies.com", label: "Email", color: "hover:text-[#c93939] hover:border-[#c93939]/30" },
               { icon: FaPhoneAlt, link: "tel:+919620996689", label: "Call", color: "hover:text-[#ccff00] hover:border-[#ccff00]/30" }
             ].map((item, i) => (

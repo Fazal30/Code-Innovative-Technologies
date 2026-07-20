@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FaWhatsapp, FaEnvelope, FaDiscord, FaGithub, FaInstagram,
   FaLinkedin, FaPaperPlane, FaShieldAlt, FaTwitter, FaSatellite, 
-  FaFingerprint, FaLock, FaBroadcastTower, FaMicrochip, FaGlobe
+  FaFingerprint, FaLock, FaBroadcastTower, FaMicrochip, FaGlobe, FaPhoneAlt 
 } from 'react-icons/fa';
 
 export default function Contact() {
@@ -121,21 +121,29 @@ export default function Contact() {
             </div>
 
             {/* SOCIAL DOCK */}
-            <div className="flex items-center gap-3 pt-4">
-               {[
-               { icon: FaInstagram, link: "https://www.instagram.com/code_innovativetechnologies?igsh=c2h2cmVreHBnY3Y5&utm_source=qr" },
-                { icon: FaWhatsapp, link: "https://wa.me/919620996689" },
-              ].map((social, i) => (
-                <motion.a
-                  key={i}
-                  whileHover={{ y: -8, rotate: 8 }}
-                  href={social.link}
-                  className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-amber-500 hover:border-amber-500 transition-all shadow-xl group"
-                >
-                  <social.icon size={20} className="group-hover:scale-110 transition-transform" />
-                </motion.a>
-              ))}
-            </div>
+            <div className="lg:col-span-4 flex flex-wrap gap-3 lg:justify-end">
+            {[
+              { icon: FaInstagram, link: "https://www.instagram.com/code_innovativetechnologies", label: "Instagram", color: "hover:text-[#E4405F] hover:border-[#E4405F]/30" },
+              { icon: FaWhatsapp, link: "https://wa.me/919620996689", label: "WhatsApp", color: "hover:text-[#25D366] hover:border-[#25D366]/30" },
+              { icon: FaLinkedin, link: "https://www.linkedin.com/company/code-innovative-technologies", label: "LinkedIn", color: "hover:text-[#0077B5] hover:border-[#0077B5]/30" },
+              { icon: FaGithub, link: "https://github.com/AppNest-Dev", label: "GitHub", color: "hover:text-white hover:border-white/30" },
+              { icon: FaEnvelope, link: "mailto:info@codeinnovativetechnologies.com", label: "Email", color: "hover:text-[#c93939] hover:border-[#c93939]/30" },
+              { icon: FaPhoneAlt, link: "tel:+919620996689", label: "Call", color: "hover:text-[#ccff00] hover:border-[#ccff00]/30" }
+            ].map((item, i) => (
+              <motion.a 
+                key={i}
+                whileHover={{ y: -4, backgroundColor: "rgba(0,0,0,0.8)" }}
+                whileTap={{ scale: 0.95 }}
+                href={item.link}
+                target={item.link.startsWith('http') ? "_blank" : "_self"}
+                rel="noopener noreferrer"
+                title={item.label}
+                className={`w-11 h-11 rounded-xl border border-white/5 flex items-center justify-center text-zinc-500 transition-all bg-zinc-950 shadow-lg ${item.color}`}
+              >
+                <item.icon size={15} />
+              </motion.a>
+            ))}
+          </div>
           </div>
 
           {/* 4. RIGHT COLUMN: THE ENCRYPTED TERMINAL */}
