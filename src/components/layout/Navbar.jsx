@@ -2,13 +2,25 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
-  FaBars, FaTimes, FaCode, FaMicrochip, 
-  FaShieldAlt, FaTerminal, FaMobileAlt, FaLongArrowAltRight, FaBrain, 
-  FaDatabase, FaNetworkWired, FaCube, FaChevronDown, FaSearch, FaRocket,
-  FaArrowRight, FaGlobe, FaBolt, FaInfoCircle
+  FaRocket, FaTerminal, FaBrain, FaDatabase, 
+  FaMicrochip, FaShieldAlt, FaMobileAlt, FaCube, 
+  FaSearch, FaArrowRight, FaGlobe, FaBolt, FaTimes, 
+  FaChevronRight
 } from 'react-icons/fa';
 import { IoIosArrowDown } from 'react-icons/io';
-import { MdGraphicEq, MdSettingsInputComponent, MdOutlineMonitorHeart } from 'react-icons/md';
+import SearchModal from '../ui/SearchModal';
+import AnimatedLogo from '../ui/AnimatedLogo';
+
+const serviceLinks = [
+  { title: "Web Engineering", desc: "Edge-delivery platforms", icon: FaRocket, path: "/services/web-dev", tag: "CORE", color: "#3b82f6" },
+  { title: "Software Systems", desc: "Enterprise SaaS logic", icon: FaTerminal, path: "/services/software", tag: "ARCH", color: "#ccff00" },
+  { title: "Neural Core", desc: "Autonomous AI agents", icon: FaBrain, path: "/services/ai-automation", tag: "AGENTS", color: "#a855f7" },
+  { title: "Data Intelligence", desc: "Predictive telemetry", icon: FaDatabase, path: "/services/data-intelligence", tag: "DATA", color: "#ec4899" },
+  { title: "Cyber Strategy", desc: "Technical audits", icon: FaMicrochip, path: "/services/consulting", tag: "ADVISORY", color: "#f59e0b" },
+  { title: "Protocol Security", desc: "Hardened defense", icon: FaShieldAlt, path: "/services/security", tag: "DEFENSE", color: "#ef4444" },
+  { title: "App Forge", desc: "Native mobile sync", icon: FaMobileAlt, path: "/services/app-dev", tag: "MOBILE", color: "#10b981" },
+  { title: "Blockchain Mesh", desc: "Web3 protocols", icon: FaCube, path: "/services/web3", tag: "DECENTRAL", color: "#6366f1" }
+];
 
 export default function Navbar() {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
@@ -18,235 +30,270 @@ export default function Navbar() {
   const location = useLocation();
   const { scrollY } = useScroll();
 
-  const navBackground = useTransform(scrollY, [0, 50], ["rgba(2, 2, 2, 0)", "rgba(2, 2, 2, 0.95)"]);
-  const navBorder = useTransform(scrollY, [0, 50], ["rgba(204, 255, 0, 0)", "rgba(204, 255, 0, 0.15)"]);
+  const navBackground = useTransform(scrollY, [0, 50], ["rgba(2, 2, 2, 0.4)", "rgba(2, 2, 2, 0.95)"]);
+  const navBorder = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 0.05)", "rgba(204, 255, 0, 0.2)"]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Animation Variants for Mobile
-  const containerVars = {
-    initial: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
-    animate: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } }
-  };
-
-  const itemVars = {
-    initial: { y: 20, opacity: 0 },
-    animate: { y: 0, opacity: 1, transition: { ease: [0.6, 0.01, 0.05, 0.95] } }
-  };
-
-  const serviceLinks = [
-    { title: "Web Engineering", desc: "Edge-delivery platforms.", icon: <FaRocket />, path: "/services/web-dev", tag: "CORE", color: "#3b82f6" },
-    { title: "Software Systems", desc: "Enterprise SaaS logic.", icon: <FaTerminal />, path: "/services/software", tag: "ARCH", color: "#ccff00" },
-    { title: "Neural Core", desc: "Autonomous AI agents.", icon: <FaBrain />, path: "/services/ai-automation", tag: "AGENTS", color: "#a855f7" },
-    { title: "Data Intelligence", desc: "Predictive telemetry.", icon: <FaDatabase />, path: "/services/data-intelligence", tag: "DATA", color: "#ec4899" },
-    { title: "Cyber Strategy", desc: "Technical audits.", icon: <FaMicrochip />, path: "/services/consulting", tag: "ADVISORY", color: "#f59e0b" },
-    { title: "Protocol Security", desc: "Hardened defense.", icon: <FaShieldAlt />, path: "/services/security", tag: "DEFENSE", color: "#ef4444" },
-    { title: "App Forge", desc: "Native mobile sync.", icon: <FaMobileAlt />, path: "/services/app-dev", tag: "MOBILE", color: "#10b981" },
-    { title: "Blockchain Mesh", desc: "Web3 protocols.", icon: <FaCube />, path: "/services/web3", tag: "DECENTRAL", color: "#6366f1" }
-  ];
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setIsServicesOpen(false);
+  }, [location.pathname]);
 
   return (
-    <header className="fixed top-0 w-full z-[100] transition-colors duration-500">
-      {/* 1. DIAGNOSTICS BAR (DESKTOP) */}
-      <div className="hidden lg:flex bg-[#050505] text-zinc-600 py-2 px-10 justify-between items-center text-[7px] font-mono tracking-[0.4em] border-b border-white/5">
-        <div className="flex gap-12 items-center">
-          <div className="flex items-center gap-2 text-[#ccff00]">
-            <span className="flex h-1.5 w-1.5 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ccff00] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#ccff00]"></span>
+    <>
+      <header className="fixed top-0 left-0 right-0 z-[100] transition-colors duration-500">
+        {/* 1. TOP DIAGNOSTICS BAR (DESKTOP) */}
+        <div className="hidden lg:flex bg-[#050505]/90 backdrop-blur-md text-zinc-500 py-1.5 px-8 justify-between items-center text-[8px] font-mono tracking-[0.3em] border-b border-white/5">
+          <div className="flex gap-8 items-center">
+            <div className="flex items-center gap-2 text-[#ccff00]">
+              <span className="flex h-1.5 w-1.5 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ccff00] opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#ccff00]" />
+              </span>
+              <span>SYSTEMS_ONLINE // ENTERPRISE_CORE</span>
+            </div>
+            <div className="flex items-center gap-2 border-l border-white/10 pl-8 uppercase">
+              <FaGlobe className="text-zinc-700" />
+              <span>CLUSTER: BENGALURU_HUB_01</span>
+            </div>
+          </div>
+          <div className="flex gap-6 items-center">
+            <span className="flex items-center gap-1.5 text-zinc-400">
+              <FaBolt className="text-[#ccff00]" /> LATENCY: 0.02ms
             </span>
-            <span>SYSTEM_STATUS: OPERATIONAL</span>
-          </div>
-          <div className="flex items-center gap-4 border-l border-white/10 pl-12 uppercase">
-            <FaGlobe className="text-zinc-800" /> <span>Cluster: Global-Edge-01</span>
+            <span className="text-zinc-700">|</span>
+            <span className="text-zinc-500">AUTH: SECP256K1</span>
           </div>
         </div>
-        <div className="flex gap-8">
-          <span className="flex items-center gap-2"><FaBolt className="text-yellow-500" /> Latency: 12ms</span>
-          <span className="text-zinc-800 italic">Auth: RSA_4096</span>
-        </div>
-      </div>
 
-      {/* 2. MAIN NAVIGATION */}
-      <motion.nav 
-        style={{ backgroundColor: navBackground, borderBottomColor: navBorder }}
-        className={`relative backdrop-blur-xl border-b transition-all duration-500 ${scrolled ? 'py-3' : 'py-6'}`}
-      >
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 flex justify-between items-center">
-          
-          {/* LOGO */}
-          <Link to="/" className="group flex items-center gap-4">
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#ccff00]/20 blur-xl group-hover:bg-[#ccff00]/40 transition-all rounded-full" />
-              <div className="relative w-10 h-10 bg-black rounded-lg flex items-center justify-center border border-white/10 group-hover:border-[#ccff00]/50 transition-all duration-500 overflow-hidden">
-                <MdSettingsInputComponent className="text-[#ccff00] text-xl relative z-10" />
-                <motion.div animate={{ y: [-40, 40] }} transition={{ repeat: Infinity, duration: 2, ease: "linear" }} className="absolute inset-0 w-full h-[1px] bg-[#ccff00]/30 shadow-[0_0_10px_#ccff00]" />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tighter text-white uppercase leading-none">CODE<span className="text-[#ccff00]">_</span>INNOVATIVE</span>
-              <span className="text-[6px] font-mono tracking-[0.6em] text-zinc-500 uppercase mt-1 italic">Advanced_Software_Forge</span>
-            </div>
-          </Link>
+        {/* 2. MAIN NAVIGATION */}
+        <motion.nav 
+          style={{ backgroundColor: navBackground, borderBottomColor: navBorder }}
+          className={`backdrop-blur-xl border-b transition-all duration-300 ${scrolled ? 'py-2.5 sm:py-3' : 'py-3.5 sm:py-4'}`}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            
+            {/* ANIMATED LOGO BRANDING */}
+            <Link to="/" className="inline-flex">
+              <AnimatedLogo size="md" showSlogan={true} />
+            </Link>
 
-          {/* DESKTOP MENU */}
-          <ul className="hidden lg:flex items-center gap-12 font-bold text-[9px] tracking-[0.3em] uppercase text-zinc-500">
-            {['Home', 'About', 'Career'].map((name) => (
-              <li key={name} className="relative overflow-hidden group py-2 px-1">
-                <Link to={name === 'Home' ? '/' : `/${name.toLowerCase()}`} className="transition-all hover:text-white">{name}</Link>
-                <motion.span className="absolute bottom-0 left-0 w-full h-[1px] bg-[#ccff00] translate-x-[-105%] group-hover:translate-x-0 transition-transform duration-500" />
+            {/* DESKTOP MENU */}
+            <ul className="hidden lg:flex items-center gap-8 xl:gap-10 font-bold text-[10px] tracking-[0.25em] uppercase text-zinc-400">
+              {[
+                { name: 'Home', path: '/' },
+                { name: 'About', path: '/about' },
+                { name: 'Arsenal', path: '/tech' },
+                { name: 'Careers', path: '/career' }
+              ].map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <li key={item.name} className="relative group py-2">
+                    <Link 
+                      to={item.path} 
+                      className={`transition-colors ${isActive ? 'text-[#ccff00]' : 'hover:text-white'}`}
+                    >
+                      {item.name}
+                    </Link>
+                    <span className={`absolute bottom-0 left-0 h-[1.5px] bg-[#ccff00] transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                  </li>
+                );
+              })}
+
+              {/* Mega Dropdown */}
+              <li 
+                className="relative py-2"
+                onMouseEnter={() => setIsServicesOpen(true)}
+                onMouseLeave={() => setIsServicesOpen(false)}
+              >
+                <button 
+                  className={`flex items-center gap-1.5 transition-colors cursor-pointer ${
+                    isServicesOpen || location.pathname.startsWith('/services') ? 'text-white' : 'hover:text-white'
+                  }`}
+                >
+                  Solutions
+                  <IoIosArrowDown className={`transition-transform duration-300 text-xs ${isServicesOpen ? 'rotate-180 text-[#ccff00]' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {isServicesOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-[620px] pt-4"
+                    >
+                      <div className="bg-[#080808]/95 backdrop-blur-2xl border border-white/10 p-5 rounded-3xl shadow-2xl grid grid-cols-2 gap-2.5">
+                        {serviceLinks.map((s, idx) => {
+                          const Icon = s.icon;
+                          return (
+                            <Link 
+                              key={idx} 
+                              to={s.path}
+                              onClick={() => setIsServicesOpen(false)}
+                              className="flex items-start gap-3.5 p-3 rounded-2xl hover:bg-white/5 transition-all group border border-transparent hover:border-white/10"
+                            >
+                              <div 
+                                className="w-8 h-8 rounded-xl bg-zinc-900/90 flex-shrink-0 flex items-center justify-center text-sm group-hover:scale-110 transition-transform" 
+                                style={{ color: s.color }}
+                              >
+                                <Icon />
+                              </div>
+                              <div>
+                                <div className="text-[10px] font-black text-white tracking-widest uppercase group-hover:text-[#ccff00] transition-colors">
+                                  {s.title}
+                                </div>
+                                <p className="text-[8px] text-zinc-500 uppercase mt-0.5 line-clamp-1">{s.desc}</p>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </li>
-            ))}
-            <li className="relative" onMouseEnter={() => setIsServicesOpen(true)} onMouseLeave={() => setIsServicesOpen(false)}>
-              <button className={`flex items-center gap-2 transition-all py-2 ${isServicesOpen ? 'text-white' : 'hover:text-white'}`}>
-                Solutions <IoIosArrowDown className={`transition-transform duration-500 ${isServicesOpen ? 'rotate-180 text-[#ccff00]' : ''}`} />
+            </ul>
+
+            {/* ACTIONS */}
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <button 
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Search site"
+                className="flex items-center gap-2 px-3 py-2 bg-white/5 text-zinc-400 hover:text-white rounded-xl border border-white/10 hover:border-[#ccff00]/40 transition-all text-xs font-mono cursor-pointer"
+              >
+                <FaSearch size={11} className="text-[#ccff00]" />
+                <span className="hidden sm:inline text-[9px] uppercase tracking-widest text-zinc-500">
+                  Search <kbd className="text-[8px] bg-black/50 px-1 py-0.5 rounded border border-white/10">⌘K</kbd>
+                </span>
               </button>
-              <AnimatePresence>
-                {isServicesOpen && (
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute top-full left-1/2 -translate-x-1/2 w-[600px] pt-6">
-                    <div className="bg-[#080808]/95 backdrop-blur-2xl border border-white/10 p-6 rounded-[2rem] grid grid-cols-2 gap-3">
-                      {serviceLinks.map((s, idx) => (
-                        <Link key={idx} to={s.path} className="flex items-start gap-4 p-4 rounded-xl hover:bg-white/[0.03] transition-all group border border-transparent hover:border-white/10">
-                          <div className="w-8 h-8 rounded-lg bg-zinc-900 flex-shrink-0 flex items-center justify-center text-sm" style={{ color: s.color }}>{s.icon}</div>
-                          <div>
-                            <div className="text-[9px] font-bold text-white tracking-widest uppercase">{s.title}</div>
-                            <p className="text-[7px] text-zinc-500 uppercase">{s.desc}</p>
+
+              <Link to="/contact" className="hidden sm:block">
+                <motion.button 
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="px-5 py-2.5 bg-[#ccff00] text-black rounded-xl text-[9px] font-black tracking-widest uppercase flex items-center gap-2 shadow-[0_0_20px_rgba(204,255,0,0.2)] hover:bg-white transition-colors cursor-pointer"
+                >
+                  Start_Build <FaArrowRight size={8} />
+                </motion.button>
+              </Link>
+
+              <button 
+                className="lg:hidden p-2.5 bg-white/5 rounded-xl border border-white/10 text-white hover:border-[#ccff00]/40 transition-all cursor-pointer"
+                onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="Open mobile navigation"
+              >
+                <div className="w-5 flex flex-col items-end gap-1">
+                  <span className="w-5 h-[2px] bg-white rounded-full" />
+                  <span className="w-3.5 h-[2px] bg-[#ccff00] rounded-full" />
+                </div>
+              </button>
+            </div>
+
+          </div>
+        </motion.nav>
+
+        {/* --- MOBILE FULLSCREEN COMMAND CENTER --- */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, x: '100%' }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: '100%' }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed inset-0 bg-[#020202]/98 backdrop-blur-3xl z-[1000] flex flex-col overflow-hidden"
+            >
+              {/* Header */}
+              <div className="p-5 flex justify-between items-center border-b border-white/10">
+                <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+                  <AnimatedLogo size="sm" showSlogan={false} />
+                </Link>
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-[#ccff00] border border-white/10 active:scale-95 transition-transform"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+
+              {/* Scrollable Mobile Content */}
+              <div className="flex-1 overflow-y-auto px-6 py-8 space-y-8">
+                {/* Primary Navigation Links */}
+                <nav className="space-y-3">
+                  {[
+                    { name: 'Home', path: '/' },
+                    { name: 'About', path: '/about' },
+                    { name: 'Arsenal & Stack', path: '/tech' },
+                    { name: 'Careers', path: '/career' },
+                    { name: 'Contact Uplink', path: '/contact' }
+                  ].map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="group flex items-center justify-between p-3 rounded-2xl hover:bg-white/5 border border-transparent hover:border-white/5 transition-all"
+                    >
+                      <span className="text-2xl sm:text-3xl font-black text-white tracking-tighter uppercase group-hover:text-[#ccff00] transition-colors">
+                        {item.name}
+                      </span>
+                      <FaChevronRight className="text-zinc-600 group-hover:text-[#ccff00] transition-colors" size={12} />
+                    </Link>
+                  ))}
+                </nav>
+
+                {/* Service Modules Accordion */}
+                <div className="space-y-4 pt-4 border-t border-white/5">
+                  <h3 className="text-[9px] font-mono text-zinc-500 uppercase tracking-[0.4em]">
+                    Deployable_Protocols
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    {serviceLinks.map((s, idx) => {
+                      const Icon = s.icon;
+                      return (
+                        <Link
+                          key={idx}
+                          to={s.path}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#ccff00]/30 transition-all flex items-center gap-3"
+                        >
+                          <div className="text-base" style={{ color: s.color }}>
+                            <Icon />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[10px] font-bold text-white uppercase tracking-wider">{s.title}</span>
+                            <span className="text-[7px] font-mono text-zinc-500 uppercase">{s.tag}</span>
                           </div>
                         </Link>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </li>
-          </ul>
-
-          {/* ACTIONS */}
-          <div className="flex items-center gap-3">
-            <button onClick={() => setIsSearchOpen(true)} className="w-10 h-10 flex items-center justify-center bg-white/5 text-zinc-500 rounded-xl border border-white/10 hover:border-[#ccff00]/30 transition-all">
-              <FaSearch size={12} />
-            </button>
-            <Link to="/contact">
-              <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} className="hidden md:flex px-6 py-3 bg-[#ccff00] text-black rounded-xl text-[8px] font-black tracking-widest uppercase items-center gap-3">
-                Start_Build <FaArrowRight />
-              </motion.button>
-            </Link>
-            <button className="lg:hidden flex flex-col items-end gap-1.5 p-3 bg-white/5 rounded-xl border border-white/10" onClick={() => setIsMobileMenuOpen(true)}>
-              <div className="w-6 h-[1.5px] bg-white" />
-              <div className="w-4 h-[1.5px] bg-[#ccff00]" />
-            </button>
-          </div>
-        </div>
-      </motion.nav>
-
-      {/* --- MOBILE FULLSCREEN COMMAND CENTER --- */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, clipPath: 'circle(0% at 90% 10%)' }}
-            animate={{ opacity: 1, clipPath: 'circle(150% at 90% 10%)' }}
-            exit={{ opacity: 0, clipPath: 'circle(0% at 90% 10%)' }}
-            transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 bg-[#020202] z-[1000] flex flex-col overflow-hidden"
-          >
-            {/* Moving Grid Background Animation */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
-                 style={{ backgroundImage: `linear-gradient(#ccff00 1px, transparent 1px), linear-gradient(90deg, #ccff00 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
-
-            {/* Mobile Header */}
-            <div className="p-6 flex justify-between items-center border-b border-white/5 relative z-10">
-              <div className="flex flex-col font-mono">
-                <span className="text-white text-xs font-bold uppercase tracking-widest animate-pulse">Interface_Active</span>
-                <span className="text-[8px] text-[#ccff00] opacity-70">Node: {location.pathname}</span>
-              </div>
-              <motion.button 
-                whileTap={{ scale: 0.9, rotate: 90 }}
-                onClick={() => setIsMobileMenuOpen(false)} 
-                className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-[#ccff00] border border-white/10"
-              >
-                <FaTimes />
-              </motion.button>
-            </div>
-
-            {/* Scrollable Content */}
-            <motion.div 
-              variants={containerVars} initial="initial" animate="animate"
-              className="flex-1 overflow-y-auto px-8 py-10 space-y-12 relative z-10"
-            >
-              {/* Primary Links + ABOUT */}
-              <nav className="space-y-4">
-                {['Home', 'About', 'Career', 'Contact'].map((name) => (
-                  <motion.div key={name} variants={itemVars}>
-                    <Link 
-                      to={name === 'Home' ? '/' : `/${name.toLowerCase()}`} 
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="group flex items-center justify-between"
-                    >
-                      <span className="text-5xl font-black text-white tracking-tighter uppercase group-hover:text-[#ccff00] transition-colors">
-                        {name}<span className="text-[#ccff00]">.</span>
-                      </span>
-                      <FaLongArrowAltRight className="opacity-0 group-hover:opacity-100 text-[#ccff00] transition-all -translate-x-4 group-hover:translate-x-0" />
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
-
-              {/* Enhanced About Section for Mobile */}
-              <motion.div variants={itemVars} className="bg-[#ccff00]/5 border border-[#ccff00]/20 p-6 rounded-3xl">
-                <div className="flex items-center gap-3 mb-4">
-                  <FaInfoCircle className="text-[#ccff00]" />
-                  <span className="text-[10px] font-bold text-white tracking-[0.2em] uppercase">Executive_Brief</span>
+                      );
+                    })}
+                  </div>
                 </div>
-                <p className="text-[10px] text-zinc-400 font-mono leading-relaxed uppercase">
-                  Code_Innovative is a high-performance software forge specializing in AI-driven architecture and hardened enterprise systems.
-                </p>
-                <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="inline-flex items-center gap-2 mt-4 text-[9px] font-bold text-[#ccff00] uppercase tracking-widest">
-                  View_Manifesto <FaArrowRight size={8} />
-                </Link>
-              </motion.div>
 
-              {/* Service Grid with Staggered Fade */}
-              <div className="space-y-6">
-                <h3 className="text-[8px] font-mono text-zinc-600 tracking-[0.5em] uppercase border-b border-white/5 pb-4 italic">Deployable_Modules</h3>
-                <div className="grid grid-cols-1 gap-3">
-                  {serviceLinks.slice(0, 6).map((s, i) => (
-                    <motion.div key={i} variants={itemVars}>
-                      <Link to={s.path} onClick={() => setIsMobileMenuOpen(false)} className="p-5 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center justify-between hover:bg-white/5 transition-all">
-                        <div className="flex items-center gap-4">
-                          <div className="text-lg" style={{ color: s.color }}>{s.icon}</div>
-                          <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-white tracking-widest uppercase">{s.title}</span>
-                            <span className="text-[7px] font-mono text-zinc-600 uppercase">{s.tag}</span>
-                          </div>
-                        </div>
-                        <FaChevronDown className="-rotate-90 text-zinc-800" size={10} />
-                      </Link>
-                    </motion.div>
-                  ))}
+                {/* Mobile Direct Action Button */}
+                <div className="pt-4">
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-full py-4 bg-[#ccff00] text-black font-black uppercase text-xs tracking-widest rounded-2xl flex items-center justify-center gap-3 shadow-xl"
+                  >
+                    Initiate Project Build <FaArrowRight size={10} />
+                  </Link>
                 </div>
               </div>
-
-              {/* Bottom Quick Actions */}
-              <motion.div variants={itemVars} className="grid grid-cols-2 gap-4 pt-4">
-                <div className="p-6 bg-zinc-900/50 rounded-3xl border border-white/5 flex flex-col gap-1">
-                  <span className="text-[#ccff00] text-xl font-bold font-mono">12ms</span>
-                  <span className="text-[7px] font-mono text-zinc-500 uppercase tracking-widest">Ping_Rate</span>
-                </div>
-                <div className="p-6 bg-[#ccff00] rounded-3xl flex flex-col gap-1">
-                  <span className="text-black text-xl font-bold font-mono">99%</span>
-                  <span className="text-black/60 text-[7px] font-mono uppercase tracking-widest font-bold">Uptime_Ratio</span>
-                </div>
-              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </header>
 
-      {/* SEARCH OVERLAY (Omitted for brevity, keep as per original) */}
-    </header>
+      {/* Global Command Palette / Search Dialog */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    </>
   );
 }

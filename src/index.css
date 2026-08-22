@@ -12,78 +12,132 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Keep Animations for the "Tech" feel */
+  /* High Performance Animations */
   --animate-float: float 6s ease-in-out infinite;
   --animate-marquee: marquee 30s linear infinite;
+  --animate-pulse-glow: pulseGlow 4s ease-in-out infinite;
+  --animate-scan: scan 4s linear infinite;
 
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    50% { transform: translateY(-15px); }
   }
 
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(1.05); }
+  }
+
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(1000%); }
+  }
 }
 
 @layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
   html {
     scroll-behavior: smooth;
-    background-color: var(--color-main-bg);
+    background-color: #020202;
+    overflow-x: hidden;
   }
 
   body {
-    background-color: var(--color-main-bg);
-    color: #a1a1aa; /* zinc-400 */
+    background-color: #020202;
+    color: #a1a1aa;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    letter-spacing: -0.01em; /* Tighter tracking for a modern look */
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+    overflow-x: hidden;
+    min-height: 100vh;
   }
 
-  /* Headlines - Removed special display fonts for a cleaner look */
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, h5, h6 {
     color: #ffffff;
     font-weight: 700;
     letter-spacing: -0.03em;
   }
 
-  /* Keep mono strictly for code/data snippets */
   code, .terminal-text {
     font-family: var(--font-mono);
     font-size: 0.85em;
   }
 }
 
-/* Minimal Scrollbar */
+/* Minimal Modern Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020202;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #27272a;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-neon-lime);
+  background: #ccff00;
 }
 
 ::selection {
-  background-color: var(--color-neon-lime);
+  background-color: #ccff00;
   color: #000000;
 }
 
+/* Custom Utilities for Cyber Tech Feel */
 @layer utilities {
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .bg-cyber-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+
   .bg-dot-pattern {
-    background-image: radial-gradient(#1a1a1a 1px, transparent 1px);
-    background-size: 30px 30px;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .glass-card {
+    background: rgba(8, 8, 8, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-card-hover {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
-  /* Simple glass effect */
-  .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+  .glass-card-hover:hover {
+    border-color: rgba(204, 255, 0, 0.3);
+    box-shadow: 0 10px 30px -10px rgba(204, 255, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(204, 255, 0, 0.4);
+  }
+
+  .border-glow {
+    box-shadow: 0 0 25px rgba(204, 255, 0, 0.15);
   }
 }

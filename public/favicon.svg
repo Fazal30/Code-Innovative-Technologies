@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="neonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ccff00" />
+      <stop offset="50%" stop-color="#00e5ff" />
+      <stop offset="100%" stop-color="#ffcc00" />
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="24" fill="#020202" stroke="#ccff00" stroke-width="4" />
+  <path d="M35 30 L15 50 L35 70" fill="none" stroke="#ccff00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M45 75 L55 25" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" />
+  <path d="M65 30 L85 50 L65 70" fill="none" stroke="#00e5ff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

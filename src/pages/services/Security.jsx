@@ -1,183 +1,178 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   FaShieldAlt, FaUserShield, FaLock, FaSearchPlus, 
-  FaNetworkWired, FaBiohazard, FaEye, FaTerminal, FaSkullCrossbones 
+  FaNetworkWired, FaEye, FaTerminal, FaChevronRight, FaCheckCircle, FaBolt 
 } from 'react-icons/fa';
+import SpotlightCard from '../../components/ui/SpotlightCard';
+import Counter from '../../components/ui/Counter';
 
-const Security = () => {
-  const { scrollYProgress } = useScroll();
-  const scanLineY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+const securityCapabilities = [
+  {
+    title: "Offensive Penetration Testing",
+    desc: "Simulated adversary warfare and red-team drills to uncover hidden business logic flaws, memory corruptions, and injection attack vectors.",
+    icon: FaSearchPlus,
+    color: "#ef4444"
+  },
+  {
+    title: "Zero-Trust Mesh & Identity",
+    desc: "Strict micro-segmentation where every packet, API request, and user token is authenticated and cryptographically validated in real-time.",
+    icon: FaLock,
+    color: "#ccff00"
+  },
+  {
+    title: "Continuous Threat Monitoring (SIEM)",
+    desc: "AI-driven automated threat hunting that detects lateral movements, anomalous API behavior, and credential stuffing attacks within milliseconds.",
+    icon: FaEye,
+    color: "#00e5ff"
+  },
+  {
+    title: "Automated Regulatory Compliance",
+    desc: "Continuous auditing frameworks ensuring full compliance with SOC2 Type II, ISO 27001, HIPAA, and GDPR standards with zero audit friction.",
+    icon: FaUserShield,
+    color: "#a855f7"
+  }
+];
 
-  const containerVars = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1, transition: { staggerChildren: 0.15 } }
-  };
-
-  const fadeInUp = {
-    initial: { y: 40, opacity: 0 },
-    animate: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.2, 1, 0.3, 1] } }
-  };
-
+export default function Security() {
   return (
-    <div className="bg-[#020202] text-white min-h-screen pt-40 pb-20 selection:bg-red-600 selection:text-white overflow-hidden font-sans">
+    <article className="bg-transparent text-white min-h-screen pt-32 sm:pt-40 pb-20 selection:bg-red-600 selection:text-white font-sans overflow-x-hidden">
       
-      {/* 1. DEFENSE GRID OVERLAY */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-20">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#300_1px,transparent_1px),linear-gradient(to_bottom,#300_1px,transparent_1px)] bg-[size:40px_40px]" />
-        <motion.div 
-          style={{ top: scanLineY }}
-          className="absolute left-0 w-full h-[2px] bg-red-600 shadow-[0_0_20px_red] z-10"
-        />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* 2. HERO SECTION */}
-        <motion.div 
-          initial="initial"
-          animate="animate"
-          variants={containerVars}
-          className="mb-32"
-        >
-          <motion.span variants={fadeInUp} className="text-red-600 font-mono text-[10px] tracking-[0.6em] uppercase mb-6 block font-black">
-            // PROTOCOL_DEFENSE_GRID_ENGAGED
-          </motion.span>
-          <motion.h1 variants={fadeInUp} className="text-[10vw] md:text-[8rem] font-black tracking-tighter leading-[0.85] mb-10 italic uppercase">
-            FORTIFIED <br /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-orange-600 to-white">
-              INFRASTRUCTURE.
+        {/* --- 1. HERO SECTION --- */}
+        <section className="mb-20 sm:mb-32">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="h-1 w-12 bg-red-600 rounded-full" />
+            <span className="text-red-500 font-mono text-[9px] sm:text-[10px] tracking-[0.4em] uppercase font-bold">
+              Service_Dossier // Cyber_Defense
             </span>
-          </motion.h1>
-          <motion.p variants={fadeInUp} className="text-zinc-500 text-xl md:text-2xl font-light max-w-4xl leading-relaxed border-l-2 border-red-900 pl-8">
-            We don't just find vulnerabilities; we eliminate the attack surface. Our <span className="text-white">Red-Team engineers</span> conduct surgical strikes against your systems to ensure zero-day readiness and total data sovereignty.
-          </motion.p>
-        </motion.div>
+          </div>
 
-        {/* 3. CORE SERVICES MESH */}
-        <motion.div 
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          variants={containerVars}
-          className="grid md:grid-cols-2 gap-px bg-white/5 border border-white/5 rounded-[3.5rem] overflow-hidden mb-48 shadow-[0_0_50px_rgba(220,38,38,0.1)]"
-        >
-          {[
-            { 
-              title: "Penetration Testing", 
-              icon: <FaSearchPlus />, 
-              tag: "OFFENSIVE", 
-              desc: "Simulated cyber-warfare scenarios to identify exploitable logic flaws before hackers do." 
-            },
-            { 
-              title: "Zero Trust Mesh", 
-              icon: <FaLock />, 
-              tag: "DEFENSIVE", 
-              desc: "Identity-centric micro-segmentation that treats every internal packet as potentially hostile." 
-            },
-            { 
-              title: "Compliance Engineering", 
-              icon: <FaUserShield />, 
-              tag: "GOVERNANCE", 
-              desc: "Automated auditing for SOC2, HIPAA, and GDPR to maintain continuous regulatory posture." 
-            },
-            { 
-              title: "Threat Hunting", 
-              icon: <FaEye />, 
-              tag: "TACTICAL", 
-              desc: "AI-driven SIEM/SOAR monitoring to detect and neutralize lateral movement in real-time." 
-            }
-          ].map((item, i) => (
-            <motion.div 
-              key={i} 
-              variants={fadeInUp}
-              className="p-16 bg-zinc-950 hover:bg-red-950/10 transition-all group relative overflow-hidden"
-            >
-              <div className="absolute -right-4 -top-4 opacity-[0.02] group-hover:opacity-10 transition-opacity">
-                <FaBiohazard className="text-9xl text-red-600" />
-              </div>
-              <div className="text-red-600 text-4xl mb-10 group-hover:scale-110 transition-transform">
-                {item.icon}
-              </div>
-              <p className="text-[9px] font-mono text-zinc-600 tracking-[0.4em] mb-4 uppercase">{item.tag}</p>
-              <h3 className="text-3xl font-black mb-6 uppercase italic tracking-tighter text-white">{item.title}</h3>
-              <p className="text-zinc-500 text-lg leading-relaxed font-light italic">"{item.desc}"</p>
-            </motion.div>
-          ))}
-        </motion.div>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl xl:text-8xl font-black tracking-tighter leading-[0.85] mb-8 uppercase italic">
+            HARDENED <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-orange-500 to-[#ccff00]">
+              DEFENSE_PROTOCOLS.
+            </span>
+          </h1>
 
-        {/* 4. TECHNICAL SPECIFICATIONS (BATTLE READY) */}
-        
-        <section className="mb-48 grid lg:grid-cols-2 gap-20 items-center">
-            <div className="space-y-12">
-                <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">
-                    THE <span className="text-red-600">RED-TEAM</span> <br /> OPERATIVE.
-                </h2>
-                <div className="space-y-8">
-                    {[
-                        { label: "Kernel Hardening", val: "Customized Linux kernels with minimized attack surfaces." },
-                        { label: "Quantum Encryption", val: "AES-256 and post-quantum algorithms for data at rest." },
-                        { label: "DDoS Mitigation", val: "Multi-layered scrubbing for TB-scale volumetric attacks." }
-                    ].map((spec, i) => (
-                        <div key={i} className="flex gap-8 group">
-                            <div className="h-14 w-1 bg-red-600/30 group-hover:bg-red-600 transition-colors" />
-                            <div>
-                                <h5 className="font-black uppercase text-sm tracking-widest text-white">{spec.label}</h5>
-                                <p className="text-zinc-500 text-sm italic">{spec.val}</p>
-                            </div>
-                        </div>
-                    ))}
+          <div className="grid md:grid-cols-12 gap-8 items-end">
+            <p className="md:col-span-8 text-zinc-400 text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-2xl">
+              We don’t just discover vulnerabilities; we eliminate the attack surface. Our <span className="text-white font-bold">Red-Team engineers</span> conduct surgical infrastructure strikes to guarantee zero-day readiness and complete data sovereignty.
+            </p>
+
+            <div className="md:col-span-4 flex gap-4">
+              <div className="p-4 bg-zinc-950/80 border border-white/10 rounded-2xl flex-1 text-center">
+                <div className="text-red-500 text-2xl sm:text-3xl font-black font-mono">
+                  <Counter from={0} to={500} duration={2} suffix="+" />
                 </div>
-            </div>
-
-            <div className="relative">
-                <div className="absolute inset-0 bg-red-600/5 blur-[100px] rounded-full animate-pulse" />
-                <div className="bg-[#050505] p-12 rounded-[4rem] border border-white/5 relative overflow-hidden">
-                    <div className="flex justify-between items-center mb-8">
-                        <FaTerminal className="text-red-600" />
-                        <span className="text-[10px] font-mono text-red-500/50">SECURE_SHELL_ACTIVE</span>
-                    </div>
-                    <div className="font-mono text-[11px] space-y-3 text-zinc-400">
-                        <p className="text-red-600">&gt; EXEC_PEN_TEST_V4.0</p>
-                        <p>&gt; SCANNING_PORTS... [80, 443, 22, 5432]</p>
-                        <p>&gt; BRUTE_FORCE_PROTECTION: [ENABLED]</p>
-                        <p>&gt; SQL_INJECTION_SHIELD: [ACTIVE]</p>
-                        <p className="text-green-500">&gt; ZERO_VULNERABILITIES_DETECTED_IN_CORE</p>
-                        <div className="pt-6 mt-6 border-t border-white/5">
-                            <div className="flex justify-between">
-                                <span>UPTIME_METRIC</span>
-                                <span className="text-white">99.9999%</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span>THREAT_LEVEL</span>
-                                <span className="text-green-500">LOW_STABLE</span>
-                            </div>
-                        </div>
-                    </div>
+                <div className="text-[8px] font-mono text-zinc-500 uppercase mt-1">Audits Executed</div>
+              </div>
+              <div className="p-4 bg-zinc-950/80 border border-white/10 rounded-2xl flex-1 text-center">
+                <div className="text-[#ccff00] text-2xl sm:text-3xl font-black font-mono">
+                  100%
                 </div>
+                <div className="text-[8px] font-mono text-zinc-500 uppercase mt-1">Sovereign Posture</div>
+              </div>
             </div>
+          </div>
         </section>
 
-        {/* 5. STRATEGIC STATS GRID */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-                { label: "Successful Mitigations", val: "10M+" },
-                { label: "Security Audits", val: "500+" },
-                { label: "Response Time", val: "< 15min" },
-                { label: "Compliance Rate", val: "100%" }
-            ].map((stat, i) => (
-                <motion.div 
-                    key={i} 
-                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(220,38,38,0.05)' }}
-                    className="p-10 border border-white/5 rounded-3xl text-center"
-                >
-                    <h4 className="text-3xl md:text-5xl font-black mb-2 tracking-tighter italic">{stat.val}</h4>
-                    <p className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{stat.label}</p>
-                </motion.div>
-            ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+        {/* --- 2. CAPABILITIES GRID --- */}
+        <section className="mb-24 sm:mb-36">
+          <div className="mb-12">
+            <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-white">
+              Defensive <span className="text-red-600 italic">Arsenal.</span>
+            </h2>
+            <p className="text-zinc-500 font-mono text-[9px] uppercase tracking-widest mt-2">
+              Military-grade cybersecurity frameworks for enterprise systems
+            </p>
+          </div>
 
-export default Security;
+          <div className="grid md:grid-cols-2 gap-6">
+            {securityCapabilities.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <SpotlightCard key={idx} className="group flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex justify-between items-start mb-6">
+                      <div 
+                        className="w-12 h-12 rounded-2xl bg-zinc-900 flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-lg"
+                        style={{ color: item.color }}
+                      >
+                        <Icon />
+                      </div>
+                      <span className="text-[9px] font-mono text-zinc-500 bg-zinc-900/80 px-2.5 py-1 rounded border border-white/5 uppercase">
+                        SECURITY_0{idx + 1}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-black text-white uppercase tracking-tight mb-3 group-hover:text-red-500 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed font-light">
+                      {item.desc}
+                    </p>
+                  </div>
+                </SpotlightCard>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* --- 3. HARDENING CHECKLIST & SPECIFICATIONS --- */}
+        <section className="mb-24 sm:mb-36 p-8 sm:p-12 bg-zinc-950/80 border border-white/10 rounded-3xl shadow-2xl">
+          <div className="grid lg:grid-cols-2 gap-10 items-center">
+            <div className="space-y-6">
+              <h2 className="text-3xl sm:text-5xl font-black uppercase tracking-tighter text-white">
+                Battle-Tested <span className="text-red-500 italic">Standards.</span>
+              </h2>
+              <p className="text-zinc-400 text-sm sm:text-base leading-relaxed font-light">
+                Every software system and cloud cluster we build undergoes automated cryptographic verification and multi-layered red-team stress testing.
+              </p>
+              <ul className="space-y-3 font-mono text-xs text-zinc-300">
+                <li className="flex items-center gap-2">
+                  <FaCheckCircle className="text-[#ccff00]" /> AES-256-GCM Hardware Encrypted Storage
+                </li>
+                <li className="flex items-center gap-2">
+                  <FaCheckCircle className="text-[#ccff00]" /> TLS 1.3 & mTLS Ephemeral Key Exchange
+                </li>
+                <li className="flex items-center gap-2">
+                  <FaCheckCircle className="text-[#ccff00]" /> Multi-Factor & Passkey Cryptographic Identity
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-6 bg-black rounded-2xl border border-white/10 font-mono text-xs text-zinc-400 space-y-2">
+              <div className="text-red-500 pb-2 border-b border-white/10 flex justify-between">
+                <span>SECURITY_TELEMETRY</span>
+                <span className="text-[#ccff00]">SECURE_STATUS</span>
+              </div>
+              <p>&gt; RUNNING_PORT_AUDIT: [22, 80, 443, 5432, 6379]</p>
+              <p>&gt; ATTACK_SURFACE_INDEX: 0.00%_EXPOSED</p>
+              <p>&gt; LATERAL_MOVEMENT_BLOCK: ACTIVE</p>
+              <p className="text-[#ccff00]">&gt; ZERO_VULNERABILITIES_CONFIRMED</p>
+            </div>
+          </div>
+        </section>
+
+        {/* --- 4. ACTION CALLOUT --- */}
+        <div className="rounded-3xl bg-gradient-to-br from-zinc-950 via-[#080808] to-black border border-white/10 p-8 sm:p-14 text-center shadow-2xl relative overflow-hidden">
+          <h2 className="text-3xl sm:text-5xl font-black mb-4 tracking-tighter uppercase italic text-white">
+            Fortify Your <span className="text-red-500">Enterprise Infrastructure.</span>
+          </h2>
+          <p className="font-mono text-xs sm:text-sm tracking-widest mb-8 uppercase text-zinc-400 max-w-md mx-auto">
+            Book an offensive security audit with our Red-Team engineers.
+          </p>
+          <Link 
+            to="/contact"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-[#ccff00] text-black rounded-xl font-black uppercase text-xs tracking-widest hover:bg-white transition-all active:scale-95 shadow-[0_0_20px_rgba(204,255,0,0.25)]"
+          >
+            Initiate Security Audit <FaChevronRight size={10} />
+          </Link>
+        </div>
+
+      </div>
+    </article>
+  );
+}

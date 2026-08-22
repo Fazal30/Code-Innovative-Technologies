@@ -1,228 +1,219 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  FaPaperPlane, FaEnvelope, FaMapMarkerAlt, FaTerminal, 
-  FaShieldAlt, FaWifi, FaLock, FaMicrochip, FaGlobe, FaGhost
+  FaPaperPlane, FaEnvelope, FaShieldAlt, FaLock, FaGlobe, FaPhoneAlt, FaCheckCircle
 } from 'react-icons/fa';
-import { useState, useEffect, useRef } from 'react';
 
 export default function ContactForm() {
-  const [logs, setLogs] = useState([]);
   const [focusedField, setFocusedField] = useState(null);
+  const [status, setStatus] = useState('idle');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    sector: 'AI_AUTONOMY',
+    message: ''
+  });
 
-  useEffect(() => {
-    const messages = [
-      "ESTABLISHING_HANDSHAKE...", "BYPASSING_FIREWALL_v2", "ENCRYPTING_PACKETS", 
-      "TUNNEL_STABLE_AES256", "UPLINK_READY", "NODES_ACTIVE: 142", "LATENCY_0.02ms"
-    ];
-    let i = 0;
-    const interval = setInterval(() => {
-      setLogs(prev => [...prev.slice(-5), `[${new Date().toLocaleTimeString()}] ${messages[i % messages.length]}`]);
-      i++;
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    const msg = `*⚡ INITIATE TRANSMISSION - UPLINK ⚡*
+Name: ${formData.name}
+Email: ${formData.email}
+Sector: ${formData.sector}
+Brief: ${formData.message}`;
+
+    const url = `https://api.whatsapp.com/send?phone=919620996689&text=${encodeURIComponent(msg)}`;
+
+    setTimeout(() => {
+      setStatus('success');
+      window.open(url, '_blank');
+    }, 1200);
+  };
 
   return (
-    <section className="relative py-20 lg:py-44 px-4 sm:px-10 overflow-hidden bg-[#020202] text-zinc-300">
-      
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <motion.div 
-          animate={{ opacity: [0.05, 0.15, 0.05], scale: [1, 1.2, 1] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#ccff00]/10 blur-[120px] rounded-full" 
-        />
-        <div className="absolute inset-0 opacity-[0.03]" 
-          style={{ 
-            backgroundImage: `linear-gradient(#ccff00 1px, transparent 1px), linear-gradient(90deg, #ccff00 1px, transparent 1px)`,
-            backgroundSize: '40px 40px' 
-          }} 
-        />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-20 items-stretch">
-          
-          <div className="lg:col-span-5 flex flex-col justify-center space-y-12">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              {/* Responsive Header */}
-              <div className="flex items-center gap-3 text-[#ccff00] font-mono tracking-[0.4em] text-[10px] sm:text-xs mb-6 uppercase font-black">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ccff00] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ccff00]"></span>
-                </span>
-                <span>COMMS_PROTOCOL_ENCRYPTED</span>
-              </div>
-              
-              <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.85] mb-8 tracking-tighter uppercase italic">
-                Get <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-zinc-100 to-zinc-500">In Touch.</span>
-              </h2>
-              
-              <p className="text-zinc-500 text-base sm:text-lg leading-relaxed max-w-md border-l border-[#ccff00]/20 pl-6">
-                Direct channel to our lead engineers. Response window: <span className="text-white">{'< 4 Hours'}</span>. 
-                Data integrity guaranteed via proprietary zero-trust tunneling.
-              </p>
-            </motion.div>
-
-            {/* LIVE CONSOLE - Responsive: Hidden on small mobile, flex on others */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="hidden sm:block bg-zinc-950/80 backdrop-blur-xl border border-white/5 p-5 rounded-2xl font-mono text-[9px] md:text-[11px] text-zinc-600 shadow-2xl group overflow-hidden"
-            >
-              <div className="flex justify-between items-center border-b border-white/5 pb-3 mb-3">
-                <div className="flex gap-1.5">
-                   <div className="w-2 h-2 rounded-full bg-zinc-800" />
-                   <div className="w-2 h-2 rounded-full bg-zinc-800" />
-                </div>
-                <span className="text-[10px] font-black tracking-widest text-[#ccff00]">LIVE_TERMINAL</span>
-              </div>
-              <div className="space-y-1.5 min-h-[100px]">
-                {logs.map((log, i) => (
-                  <motion.p 
-                    initial={{ opacity: 0, x: -10 }} 
-                    animate={{ opacity: 1, x: 0 }} 
-                    key={i} 
-                    className={i === logs.length - 1 ? "text-[#ccff00]" : ""}
-                  >
-                    {log}
-                  </motion.p>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* CONTACT CARDS */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-               {[
-                 { icon: <FaEnvelope />, label: 'Neural Link', val: 'Info@codeinnovativetechnologies.com', color: '#ccff00' },
-                 { icon: <FaGlobe />, label: 'Base Station', val: 'Electronic City, BLR', color: '#00e5ff' }
-               ].map((card, i) => (
-                <motion.div 
-                  key={i}
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-5 bg-white/[0.03] p-5 rounded-2xl border border-white/5 hover:border-zinc-500 transition-all cursor-crosshair"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-zinc-900 flex items-center justify-center text-lg" style={{ color: card.color }}>
-                    {card.icon}
-                  </div>
-                  <div>
-                    <p className="text-[9px] uppercase tracking-[0.3em] text-zinc-600 font-bold">{card.label}</p>
-                    <p className="text-white text-sm font-bold">{card.val}</p>
-                  </div>
-                </motion.div>
-               ))}
-            </div>
+    <div className="text-zinc-300">
+      <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+        
+        {/* LEFT COLUMN */}
+        <div className="lg:col-span-5 flex flex-col justify-center space-y-8">
+          <div>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-[0.9] mb-4 tracking-tighter uppercase italic">
+              Get <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ccff00] via-zinc-100 to-zinc-500">
+                In Touch.
+              </span>
+            </h2>
+            
+            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed border-l border-[#ccff00]/30 pl-4">
+              Direct channel to our lead engineering team. Standard response window: <span className="text-[#ccff00] font-bold">&lt; 4 Hours</span>.
+            </p>
           </div>
 
-          {/* --- RIGHT: THE SECURE INPUT HUB --- */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="lg:col-span-7 relative group"
-          >
-            {/* Cyber Frame Decor */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 border-t-2 border-r-2 border-[#ccff00]/20 rounded-tr-3xl pointer-events-none group-hover:border-[#ccff00]/50 transition-all duration-500" />
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 border-b-2 border-l-2 border-[#ccff00]/20 rounded-bl-3xl pointer-events-none group-hover:border-[#ccff00]/50 transition-all duration-500" />
+          {/* CONTACT INFO CARDS */}
+          <div className="space-y-3">
+            {[
+              { icon: FaEnvelope, label: 'Secure Email', val: 'Info@codeinnovativetechnologies.com', href: 'mailto:Info@codeinnovativetechnologies.com', color: '#ccff00' },
+              { icon: FaPhoneAlt, label: 'Direct Line', val: '+91 96209 96689', href: 'tel:+919620996689', color: '#00e5ff' },
+              { icon: FaGlobe, label: 'Engineering Base', val: 'Electronic City, Bengaluru', href: '#', color: '#a855f7' }
+            ].map((card, i) => {
+              const Icon = card.icon;
+              return (
+                <a 
+                  key={i}
+                  href={card.href}
+                  className="flex items-center gap-4 bg-zinc-950/80 p-4 rounded-2xl border border-white/5 hover:border-white/20 transition-all group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-zinc-900 flex items-center justify-center text-sm group-hover:scale-110 transition-transform" style={{ color: card.color }}>
+                    <Icon />
+                  </div>
+                  <div>
+                    <p className="text-[8px] uppercase tracking-[0.2em] text-zinc-500 font-mono font-bold">{card.label}</p>
+                    <p className="text-white text-xs sm:text-sm font-bold group-hover:text-[#ccff00] transition-colors truncate max-w-[240px] sm:max-w-xs">{card.val}</p>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
 
-            <div className="bg-[#080808]/90 backdrop-blur-3xl p-6 sm:p-12 rounded-[2rem] sm:rounded-[3rem] border border-white/10 shadow-3xl overflow-hidden relative">
-              
-              <form className="space-y-8 relative z-10" onSubmit={(e) => e.preventDefault()}>
-                
-                <div className="grid md:grid-cols-2 gap-8">
-                  {/* Name Input */}
-                  <div className="relative">
-                    <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'name' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>01_Identity_Header</label>
+        {/* RIGHT COLUMN: SECURE INPUT FORM */}
+        <div className="lg:col-span-7">
+          <div className="bg-[#080808]/90 backdrop-blur-2xl p-6 sm:p-10 rounded-3xl border border-white/10 shadow-2xl relative">
+            
+            <AnimatePresence mode="wait">
+              {status === 'success' ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="py-12 text-center space-y-4"
+                >
+                  <div className="w-16 h-16 bg-[#ccff00] text-black rounded-full flex items-center justify-center mx-auto text-2xl shadow-[0_0_30px_rgba(204,255,0,0.3)]">
+                    <FaCheckCircle />
+                  </div>
+                  <h3 className="text-2xl font-black uppercase tracking-tight text-white">Transmission Initiated</h3>
+                  <p className="text-xs text-zinc-400 font-mono max-w-sm mx-auto">
+                    Data packet compiled and routed through secure uplink.
+                  </p>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    className="px-6 py-2.5 bg-zinc-900 border border-white/10 rounded-xl text-xs font-mono uppercase tracking-widest text-[#ccff00] hover:bg-zinc-800 transition-all"
+                  >
+                    Send New Message
+                  </button>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    {/* Name */}
+                    <div>
+                      <label className={`text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.2em] block mb-1.5 transition-colors ${focusedField === 'name' ? 'text-[#ccff00]' : 'text-zinc-500'}`}>
+                        01_Your_Name
+                      </label>
+                      <input 
+                        required
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField('name')}
+                        onBlur={() => setFocusedField(null)}
+                        type="text" 
+                        placeholder="Alex Morgan" 
+                        className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-white text-xs sm:text-sm outline-none focus:border-[#ccff00] transition-colors placeholder:text-zinc-700 font-mono"
+                      />
+                    </div>
+
+                    {/* Sector */}
+                    <div>
+                      <label className={`text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.2em] block mb-1.5 transition-colors ${focusedField === 'sector' ? 'text-[#ccff00]' : 'text-zinc-500'}`}>
+                        02_Project_Sector
+                      </label>
+                      <select 
+                        name="sector"
+                        value={formData.sector}
+                        onChange={handleChange}
+                        onFocus={() => setFocusedField('sector')}
+                        onBlur={() => setFocusedField(null)}
+                        className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-white text-xs sm:text-sm outline-none focus:border-[#ccff00] transition-colors font-mono cursor-pointer"
+                      >
+                        <option value="AI_AUTONOMY">AI & Neural Systems</option>
+                        <option value="WEB_ENGINEERING">Web & SaaS Platforms</option>
+                        <option value="CYBER_SECURITY">Cyber Defense & Audits</option>
+                        <option value="MOBILE_APPS">Mobile Applications</option>
+                        <option value="CLOUD_INFRA">Cloud & Microservices</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className={`text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.2em] block mb-1.5 transition-colors ${focusedField === 'email' ? 'text-[#ccff00]' : 'text-zinc-500'}`}>
+                      03_Email_Address
+                    </label>
                     <input 
-                      onFocus={() => setFocusedField('name')}
+                      required
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      onFocus={() => setFocusedField('email')}
                       onBlur={() => setFocusedField(null)}
-                      type="text" 
-                      placeholder="ENTER NAME" 
-                      className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm placeholder:text-zinc-800"
+                      type="email" 
+                      placeholder="alex@enterprise.com" 
+                      className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-white text-xs sm:text-sm outline-none focus:border-[#ccff00] transition-colors placeholder:text-zinc-700 font-mono"
                     />
                   </div>
 
-                  {/* Project Type */}
-                  <div className="relative">
-                    <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'type' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>02_Sector_Selection</label>
-                    <select 
-                      onFocus={() => setFocusedField('type')}
+                  {/* Message */}
+                  <div>
+                    <label className={`text-[8px] sm:text-[9px] font-mono uppercase tracking-[0.2em] block mb-1.5 transition-colors ${focusedField === 'msg' ? 'text-[#ccff00]' : 'text-zinc-500'}`}>
+                      04_Project_Brief
+                    </label>
+                    <textarea 
+                      required
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      onFocus={() => setFocusedField('msg')}
                       onBlur={() => setFocusedField(null)}
-                      className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm appearance-none"
-                    >
-                      <option className="bg-[#080808]">AI_AUTONOMY</option>
-                      <option className="bg-[#080808]">CYBER_HARDENING</option>
-                      <option className="bg-[#080808]">NEURAL_ARCH</option>
-                    </select>
+                      rows="4"
+                      placeholder="Describe your technical requirements and objectives..." 
+                      className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-white text-xs sm:text-sm outline-none focus:border-[#ccff00] transition-colors placeholder:text-zinc-700 font-mono resize-none"
+                    />
                   </div>
-                </div>
 
-                {/* Email Input */}
-                <div className="relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'email' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>03_Communication_Node</label>
-                  <input 
-                    onFocus={() => setFocusedField('email')}
-                    onBlur={() => setFocusedField(null)}
-                    type="email" 
-                    placeholder="ENTER EMAIL ADDRESS" 
-                    className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm placeholder:text-zinc-800"
-                  />
-                </div>
+                  {/* Submit */}
+                  <div className="pt-2">
+                    <button 
+                      type="submit"
+                      disabled={status === 'sending'}
+                      className="w-full py-4 bg-[#ccff00] text-black font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs rounded-xl flex items-center justify-center gap-3 shadow-[0_0_25px_rgba(204,255,0,0.2)] hover:bg-white transition-all active:scale-98 cursor-pointer disabled:opacity-50"
+                    >
+                      <span>{status === 'sending' ? 'ENCRYPTING PACKET...' : 'INITIATE_UPLINK'}</span>
+                      <FaPaperPlane size={11} />
+                    </button>
+                  </div>
 
-                {/* Message Input */}
-                <div className="relative">
-                  <label className={`text-[9px] font-mono uppercase tracking-[0.2em] transition-all duration-300 ${focusedField === 'msg' ? 'text-[#ccff00]' : 'text-zinc-600'}`}>04_Requirement_Manifesto</label>
-                  <textarea 
-                    onFocus={() => setFocusedField('msg')}
-                    onBlur={() => setFocusedField(null)}
-                    placeholder="DEFINE OBJECTIVES..." 
-                    className="w-full mt-2 bg-transparent border-b-2 border-white/10 p-3 text-white outline-none focus:border-[#ccff00] transition-all font-mono text-sm placeholder:text-zinc-800 h-32 resize-none"
-                  />
-                </div>
+                  {/* Secure Tags */}
+                  <div className="flex flex-wrap justify-between gap-2 pt-2 text-[8px] font-mono text-zinc-600 uppercase">
+                    <span className="flex items-center gap-1.5"><FaShieldAlt className="text-[#ccff00]" /> E2E_HARDENED</span>
+                    <span className="flex items-center gap-1.5"><FaLock className="text-cyan-400" /> AES_256</span>
+                    <span>NO_LOGS_SAVED</span>
+                  </div>
+                </form>
+              )}
+            </AnimatePresence>
 
-                {/* Submit Sequence */}
-                <div className="pt-6">
-                  <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full group relative py-6 bg-[#ccff00] text-black font-black uppercase tracking-[0.5em] text-[10px] sm:text-xs rounded-xl overflow-hidden"
-                  >
-                    <span className="relative z-10 flex items-center justify-center gap-4">
-                      INITIATE_UPLINK <FaPaperPlane className="group-hover:translate-x-2 group-hover:-translate-y-2 transition-transform duration-500" />
-                    </span>
-                    <div className="absolute inset-0 bg-white translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-500" />
-                  </motion.button>
-                </div>
-
-                {/* Secure Tags */}
-                <div className="flex flex-wrap justify-between gap-4 pt-6 opacity-30 group-hover:opacity-100 transition-opacity">
-                   <div className="flex items-center gap-2 text-[8px] font-mono uppercase font-black tracking-widest">
-                     <FaShieldAlt className="text-[#ccff00]" /> E2E_HARDENED
-                   </div>
-                   <div className="flex items-center gap-2 text-[8px] font-mono uppercase font-black tracking-widest">
-                     <FaLock className="text-[#ccff00]" /> AES_ENCRYPTED
-                   </div>
-                   <div className="flex items-center gap-2 text-[8px] font-mono uppercase font-black tracking-widest">
-                     <FaGhost className="text-[#ccff00]" /> NO_LOGS_KEPT
-                   </div>
-                </div>
-
-              </form>
-
-              {/* Decorative Scanline */}
-              <motion.div 
-                animate={{ top: ["0%", "100%"] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                className="absolute left-0 right-0 h-[1px] bg-[#ccff00]/10 z-0 pointer-events-none"
-              />
-            </div>
-          </motion.div>
+          </div>
         </div>
+
       </div>
-    </section>
+    </div>
   );
-} 
+}
